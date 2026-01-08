@@ -1,8 +1,6 @@
-import { Component, Renderer2 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-
-import { ApiServiceService } from './services/api-service.service';
+import { Component } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { FacebookPixelService } from './services/facebook-pixel.service';
 
 @Component({
   selector: 'app-root',
@@ -12,4 +10,14 @@ import { ApiServiceService } from './services/api-service.service';
 export class AppComponent {
   title = 'familytree';
 
+  constructor(
+    private router: Router,
+    private fbPixel: FacebookPixelService
+  ) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.fbPixel.trackPageView();
+      }
+    });
+  }
 }
