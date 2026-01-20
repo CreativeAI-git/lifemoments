@@ -2,6 +2,15 @@
     display: none;
 }
 
+.zpbutton.zpbutton-type-primary,
+button.zpbutton-type-primary,
+input[type=submit].zpbutton-type-primary,
+input[type=button].zpbutton-type-primary {
+    background: #fff;
+    color: #31C82D !important;
+    border-color: transparent
+}
+
 .ct_dandline_img_floating {
     position: absolute;
     top: 0px;
@@ -126,6 +135,12 @@
 }
 
 @media screen and (max-width:767px) {
+    .privacy-grp-clas {
+        justify-content: space-evenly !important;
+        align-items: self-start;
+        padding-inline: 14px;
+    }
+
     .ct_moble_top_hero_banner {
         /* aspect-ratio: 4/4.2; */
         height: 502px !important;
