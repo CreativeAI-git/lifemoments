@@ -12,8 +12,11 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { TermsofuseComponent } from './termsofuse/termsofuse.component';
 import { PrivacypolicyComponent } from './privacypolicy/privacypolicy.component';
 import { OurStoryComponent } from './our-story/our-story.component';
+import { PressReleaseComponent } from './press-release/press-release.component';
 
 const routes: Routes = [
+
+  {path: 'press-release', component: PressReleaseComponent },
   { path: 'termsofuse', component: TermsofuseComponent },
   { path: 'ourstory', component: OurStoryComponent },
   { path: 'privacypolicy', component: PrivacypolicyComponent },

@@ -1,0 +1,48 @@
+ .ct_fs_20 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    font-family: "Open Sans", sans-serif;
+  }
+  .ct_fs_16 {
+    font-size: 16px;
+    font-family: "Open Sans", sans-serif;
+  }
+  ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    padding-block: 0px;
+  }
+  ol {
+    list-style-type: decimal;
+    padding-left: 20px;
+  }
+  ul li{
+    padding: 0px;
+    font-family: "Open Sans", sans-serif;
+  }
+
+  .ct_fs_28{
+    font-size: 28px;
+    font-weight: 700;
+    font-family: "Open Sans", sans-serif;
+  }
+
+  .ct_privacy_logo img {
+    max-width: 280px;
+    margin-inline: auto;
+    display: block;
+}
+.ct_privacy_logo {
+    background-color: #f5f5f5;
+    padding: 22px;
+    margin-bottom: 50px;
+    position: sticky;
+    top: 0px;
+}
+
+a.ct_back_icon {
+    color: #000;
+    font-size: 24px;
+    margin-right: 5px;
+}

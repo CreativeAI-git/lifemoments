@@ -138,7 +138,7 @@ input[type=button].zpbutton-type-primary {
     .privacy-grp-clas {
         justify-content: space-evenly !important;
         align-items: self-start;
-        padding-inline: 14px;
+        /* padding-inline: 14px; */
     }
 
     .ct_moble_top_hero_banner {
