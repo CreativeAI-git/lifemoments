@@ -60,7 +60,11 @@ export class FamilyTreeComponent implements OnInit {
 
           const tree = document.getElementById('tree');
           if (tree) {
-
+            // FamilyTree.templates['john'].defs =
+            //   FamilyTree.templates['john'].defs?.replace(
+            //     /stroke="[^"]*"/g,
+            //     'stroke="#44b741"'
+            //   );
             //FamilyTree.templates["john_male"]["img_0"] = `<image preserveAspectRatio="xMidYMid slice" xlink:href="{val}" x="20" y="-15" width="80" height="80"></image>`;
             FamilyTree.templates["john_male"]["img_1"] = `<image preserveAspectRatio="xMidYMid slice" xlink:href="{val}" x="150" y="-15" width="80" height="80"></image>`;
             // FamilyTree.templates["john_female"]["img_0"] = `<image preserveAspectRatio="xMidYMid slice" xlink:href="{val}" x="20" y="-15" width="80" height="80"></image>`;

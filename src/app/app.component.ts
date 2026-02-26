@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { FacebookPixelService } from './services/facebook-pixel.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -19,5 +20,12 @@ export class AppComponent {
         this.fbPixel.trackPageView();
       }
     });
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        window.gtag('event', 'page_view', {
+          page_path: event.urlAfterRedirects
+        });
+      });
   }
 }
