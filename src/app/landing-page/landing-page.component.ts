@@ -142,4 +142,13 @@ export class LandingPageComponent {
     //   }
     // }
   }
+
+  trackSocialClick(platform: string) {
+    if (window.gtag) {
+      window.gtag('event', 'social_click', {
+        social_platform: platform,
+        page_url: window.location.href
+      });
+    }
+  }
 }
