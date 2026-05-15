@@ -28,13 +28,11 @@
             "styles": [
               "src/styles.css",
               "node_modules/ngx-toastr/toastr.css"
-            ],
-            "scripts": [
-              "src/assets/balkanapp/familytree.js"
             ]
           },
           "configurations": {
             "production": {
+              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -47,6 +45,8 @@
                   "maximumError": "4kb"
                 }
               ],
+              "namedChunks": false,
+              "optimization": true,
               "outputHashing": "all"
             },
             "development": {
@@ -92,9 +92,6 @@
             ],
             "styles": [
               "src/styles.css"
-            ],
-            "scripts": [
-              "src/assets/balkanapp/familytree.js"
             ]
           }
         }

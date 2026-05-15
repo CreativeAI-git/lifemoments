@@ -1,8 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ApiServiceService } from '../services/api-service.service';
 
 @Component({
   selector: 'app-delete-account',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './delete-account.component.html',
   styleUrls: ['./delete-account.component.css']
 })

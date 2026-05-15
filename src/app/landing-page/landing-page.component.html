@@ -123,8 +123,9 @@
                                                 aria-label="Open Lightbox" style="cursor:pointer;">
                                                 <picture><img class="zpimage zpimage-style-none zpimage-space-none "
                                                         src="assets/files/Life-s%20Moments%20logo%20R%20landscape%20-%20white%20text.png"
-                                                        width="281.6" height="64" alt="files" loading="lazy"
-                                                        size="custom" data-lightbox="true" /></picture>
+                                                        width="281.6" height="64" alt="files" loading="eager"
+                                                        fetchpriority="high" size="custom" data-lightbox="true" />
+                                                </picture>
                                             </span>
                                         </figure>
                                     </div>
@@ -232,7 +233,7 @@
                                     </style>
                                     <h2 class="zpheading zpheading-style-none zpheading-align-center zpheading-align-mobile-center zpheading-align-tablet-center "
                                         data-editor="true"><span
-                                            style="font-family:&quot;Open Sans&quot;, sans-serif;color:#000;font-size:32px;">All
+                                            style="font-family:&quot;Open Sans&quot;, sans-serif;color:#000;font-size:32px; font-weight: normal;">All
                                             your family’s memories… finally organized
                                         </span></h2>
                                 </div>
@@ -796,10 +797,12 @@
                                     </style>
                                     <div
                                         class="zpvideo-container zpiframe-align-center zpiframe-mobile-align-center zpiframe-tablet-align-center">
-                                        <iframe class="zpvideo" id="ct_video_iframe" width="560" height="315"
-                                            style="object-fit:contain;"
-                                            src="https://www.youtube.com/embed/b5pwwWU5G3w?enablejsapi=1"
-                                            frameborder="0" allowfullscreen>
+                                        <iframe #videoIframe class="zpvideo" id="ct_video_iframe" width="560"
+                                            height="315" style="object-fit:contain;"
+                                            data-src="https://www.youtube.com/embed/b5pwwWU5G3w?enablejsapi=1"
+                                            loading="lazy" referrerpolicy="strict-origin-when-cross-origin"
+                                            title="Life's Moments App Demo Video" frameborder="0" allowfullscreen
+                                            (mouseenter)="primeVideoLoad()" (click)="primeVideoLoad()">
                                         </iframe>
                                     </div>
                                 </div>

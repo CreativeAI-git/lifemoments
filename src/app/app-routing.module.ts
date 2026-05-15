@@ -1,53 +1,124 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FamilyTreeComponent } from './family-tree/family-tree.component';
-import { UrlLinkComponent } from './url-link/url-link.component';
-import { SnapshotComponent } from './snapshot/snapshot.component';
-import { GuestUserComponent } from './guest-user/guest-user.component';
-import { ReverseSnapshotComponent } from './reverse-snapshot/reverse-snapshot.component';
-import { DeleteAccountComponent } from './delete-account/delete-account.component';
-import { DeeplinkComponent } from './deeplink/deeplink.component';
-import { NoRedirectComponent } from './no-redirect/no-redirect.component';
-import { LandingPageComponent } from './landing-page/landing-page.component';
-import { TermsofuseComponent } from './termsofuse/termsofuse.component';
-import { PrivacypolicyComponent } from './privacypolicy/privacypolicy.component';
-import { OurStoryComponent } from './our-story/our-story.component';
-import { PressReleaseComponent } from './press-release/press-release.component';
 
 const routes: Routes = [
-
-  {path: 'press-release', component: PressReleaseComponent },
-  { path: 'termsofuse', component: TermsofuseComponent },
-  { path: 'ourstory', component: OurStoryComponent },
-  { path: 'privacypolicy', component: PrivacypolicyComponent },
-  { path: 'remove-account', component: DeleteAccountComponent },
-  { path: 'deeplink', component: DeeplinkComponent },
-  { path: 'give-haring-a-try', component: DeeplinkComponent },
-  { path: 'handover-login', component: DeeplinkComponent },
-  { path: 'handover', component: DeeplinkComponent },
-  { path: 'sharing', component: DeeplinkComponent },
-  { path: 'guest-login', component: DeeplinkComponent },
-  { path: 'your-trial-about-to-end', component: DeeplinkComponent },
-  { path: 'your-trial-has-ended', component: DeeplinkComponent },
-  { path: 'start-interview', component: DeeplinkComponent },
-  { path: 'start-interview-three', component: DeeplinkComponent },
-  { path: 'profile-photo', component: DeeplinkComponent },
-  { path: 'profile-photo-member', component: DeeplinkComponent },
-  { path: 'profile-photo-pet', component: DeeplinkComponent },
-  { path: 'give_it_try', component: DeeplinkComponent },
-  { path: 'free-trial', component: DeeplinkComponent },
-  { path: 'trial-scree', component: DeeplinkComponent },
-  { path: 'snapshot/:family_id', component: SnapshotComponent },
-  { path: 'no-redirect/:family_id', component: NoRedirectComponent },
-  { path: 'reverse-snapshot/:family_id', component: ReverseSnapshotComponent },
-  { path: 'urlLink/:id/:is_pet', component: UrlLinkComponent },
-  { path: 'guest-user/:family_id', component: GuestUserComponent },
-  { path: '', component: LandingPageComponent, pathMatch: 'full' },
-  { path: ':family_id', component: FamilyTreeComponent },
+  {
+    path: 'press-release',
+    loadComponent: () => import('./press-release/press-release.component').then((m) => m.PressReleaseComponent)
+  },
+  {
+    path: 'termsofuse',
+    loadComponent: () => import('./termsofuse/termsofuse.component').then((m) => m.TermsofuseComponent)
+  },
+  {
+    path: 'ourstory',
+    loadComponent: () => import('./our-story/our-story.component').then((m) => m.OurStoryComponent)
+  },
+  {
+    path: 'privacypolicy',
+    loadComponent: () => import('./privacypolicy/privacypolicy.component').then((m) => m.PrivacypolicyComponent)
+  },
+  {
+    path: 'remove-account',
+    loadComponent: () => import('./delete-account/delete-account.component').then((m) => m.DeleteAccountComponent)
+  },
+  {
+    path: 'deeplink',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'give-haring-a-try',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'handover-login',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'handover',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'sharing',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'guest-login',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'your-trial-about-to-end',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'your-trial-has-ended',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'start-interview',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'start-interview-three',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'profile-photo',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'profile-photo-member',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'profile-photo-pet',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'give_it_try',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'free-trial',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'trial-scree',
+    loadComponent: () => import('./deeplink/deeplink.component').then((m) => m.DeeplinkComponent)
+  },
+  {
+    path: 'snapshot/:family_id',
+    loadComponent: () => import('./snapshot/snapshot.component').then((m) => m.SnapshotComponent)
+  },
+  {
+    path: 'no-redirect/:family_id',
+    loadComponent: () => import('./no-redirect/no-redirect.component').then((m) => m.NoRedirectComponent)
+  },
+  {
+    path: 'reverse-snapshot/:family_id',
+    loadComponent: () => import('./reverse-snapshot/reverse-snapshot.component').then((m) => m.ReverseSnapshotComponent)
+  },
+  {
+    path: 'urlLink/:id/:is_pet',
+    loadComponent: () => import('./url-link/url-link.component').then((m) => m.UrlLinkComponent)
+  },
+  {
+    path: 'guest-user/:family_id',
+    loadComponent: () => import('./guest-user/guest-user.component').then((m) => m.GuestUserComponent)
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    loadComponent: () => import('./landing-page/landing-page.component').then((m) => m.LandingPageComponent)
+  },
+  {
+    path: ':family_id',
+    loadComponent: () => import('./family-tree/family-tree.component').then((m) => m.FamilyTreeComponent)
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

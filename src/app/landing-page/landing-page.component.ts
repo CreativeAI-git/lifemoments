@@ -1,21 +1,21 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, ViewChild } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CookieConsentService } from '../services/cookie-consent.service';
 import { FacebookPixelService } from '../services/facebook-pixel.service';
 import { AnalyticsService } from '../services/analytics.service';
-import { HostListener } from '@angular/core';
-declare var YT: any;
+import { CookieConsentComponent } from '../cookie-consent/cookie-consent.component';
+import { ThirdPartyScriptsService } from '../services/third-party-scripts.service';
 
-declare global {
-  interface Window {
-    YT: any;
-  }
-}
 @Component({
   selector: 'app-landing-page',
+  standalone: true,
+  imports: [RouterModule, CookieConsentComponent],
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.css']
 })
-export class LandingPageComponent {
+export class LandingPageComponent implements AfterViewInit, OnDestroy {
+  @ViewChild('videoIframe') videoIframe?: ElementRef<HTMLIFrameElement>;
+
   scroll25 = false;
   scroll50 = false;
   scroll75 = false;
@@ -23,23 +23,28 @@ export class LandingPageComponent {
   player: any;
   videoStarted = false;
   videoCompleted = false;
-  constructor(private cookieService: CookieConsentService, private fbPixel: FacebookPixelService, private analytics: AnalyticsService) { }
+  private videoObserver?: IntersectionObserver;
+  private playerInitialized = false;
+
+  constructor(
+    private cookieService: CookieConsentService,
+    private fbPixel: FacebookPixelService,
+    private analytics: AnalyticsService,
+    private thirdPartyScripts: ThirdPartyScriptsService
+  ) { }
 
   ngOnInit() {
     if (this.cookieService.getConsentStatus() === 'accepted') {
-      this.loadAnalytics();
+      this.analytics.ensureLoaded();
     }
   }
 
   ngAfterViewInit() {
-    this.loadYoutubePlayer();
+    this.setupDeferredVideo();
   }
 
-  loadAnalytics() {
-    const script = document.createElement('script');
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=GA_ID';
-    script.async = true;
-    document.body.appendChild(script);
+  ngOnDestroy() {
+    this.videoObserver?.disconnect();
   }
 
   redirectToStore(
@@ -50,16 +55,15 @@ export class LandingPageComponent {
 
     this.fbPixel.trackStoreRedirect(store, position);
 
-    if (window.gtag) {
-      window.gtag('event',
-        store === 'ios' ? 'app_store_click' : 'google_play_click',
-        {
-          button_position: position,
-          store_type: store,
-          page_url: window.location.href
-        }
-      );
-    }
+    this.analytics.trackEvent(
+      store === 'ios' ? 'app_store_click' : 'google_play_click',
+      {
+        button_position: position,
+        store_type: store,
+        page_url: window.location.href
+      }
+    );
+
     setTimeout(() => {
       window.open(url, '_blank');
     }, 150);
@@ -98,38 +102,87 @@ export class LandingPageComponent {
   }
 
   sendScrollEvent(percent: number) {
-    if (window.gtag) {
-      window.gtag('event', 'scroll_depth', {
-        percent_scrolled: percent,
-        page_url: window.location.href
-      });
-    }
+    this.analytics.trackEvent('scroll_depth', {
+      percent_scrolled: percent,
+      page_url: window.location.href
+    });
   }
 
-  loadYoutubePlayer() {
-    const checkYT = setInterval(() => {
-      if (window['YT'] && window['YT'].Player) {
-        clearInterval(checkYT);
+  primeVideoLoad() {
+    this.activateVideo();
+  }
 
-        this.player = new YT.Player('ct_video_iframe', {
-          events: {
-            onStateChange: (event: any) => this.onPlayerStateChange(event)
-          }
-        });
+  private setupDeferredVideo() {
+    const iframe = this.videoIframe?.nativeElement;
+    if (!iframe) {
+      return;
+    }
+
+    const triggerVideoLoad = () => this.activateVideo();
+
+    iframe.addEventListener('pointerenter', triggerVideoLoad, { once: true });
+    iframe.addEventListener('focus', triggerVideoLoad, { once: true });
+    iframe.addEventListener('touchstart', triggerVideoLoad, { once: true, passive: true });
+
+    if (typeof IntersectionObserver === 'undefined') {
+      triggerVideoLoad();
+      return;
+    }
+
+    this.videoObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.activateVideo();
+          this.videoObserver?.disconnect();
+        }
+      });
+    }, {
+      rootMargin: '300px 0px'
+    });
+
+    this.videoObserver.observe(iframe);
+  }
+
+  private activateVideo() {
+    const iframe = this.videoIframe?.nativeElement;
+    if (!iframe) {
+      return;
+    }
+
+    const deferredSrc = iframe.dataset['src'];
+    if (deferredSrc && iframe.src !== deferredSrc) {
+      iframe.src = deferredSrc;
+    }
+
+    this.initializeYoutubePlayer();
+  }
+
+  private async initializeYoutubePlayer() {
+    if (this.playerInitialized) {
+      return;
+    }
+
+    await this.thirdPartyScripts.ensureYoutubeIframeApiLoaded();
+
+    if (!window.YT?.Player) {
+      return;
+    }
+
+    this.playerInitialized = true;
+    this.player = new window.YT.Player('ct_video_iframe', {
+      events: {
+        onStateChange: (event: any) => this.onPlayerStateChange(event)
       }
-    }, 500);
+    });
   }
 
   onPlayerStateChange(event: any) {
     if (event.data === 1 && !this.videoStarted) {
       this.videoStarted = true;
-
-      if (window.gtag) {
-        window.gtag('event', 'video_play', {
-          video_title: 'Life Moments Demo',
-          page_url: window.location.href
-        });
-      }
+      this.analytics.trackEvent('video_play', {
+        video_title: 'Life Moments Demo',
+        page_url: window.location.href
+      });
     }
 
     // if (event.data === 0 && !this.videoCompleted) {
@@ -144,11 +197,9 @@ export class LandingPageComponent {
   }
 
   trackSocialClick(platform: string) {
-    if (window.gtag) {
-      window.gtag('event', 'social_click', {
-        social_platform: platform,
-        page_url: window.location.href
-      });
-    }
+    this.analytics.trackEvent('social_click', {
+      social_platform: platform,
+      page_url: window.location.href
+    });
   }
 }

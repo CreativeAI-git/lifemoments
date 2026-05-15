@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import FamilyTree from '@balkangraph/familytree.js';
 import { ApiServiceService } from '../services/api-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { loadFamilyTree } from '../utils/load-family-tree';
 
 @Component({
   selector: 'app-snapshot',
+  standalone: true,
   templateUrl: './snapshot.component.html',
   styleUrls: ['./snapshot.component.css']
 })
@@ -58,9 +59,10 @@ export class SnapshotComponent {
 
     this.appService
       .createTree_2('share/createNewTree', formData.toString())
-      .subscribe((res) => {
+      .subscribe(async (res) => {
         if (res.success == true) {
           var parent_level = res.familyTreeDetails;
+          const { default: FamilyTree } = await loadFamilyTree();
           FamilyTree.MAX_DEPTH = 1000;
 
           const tree = document.getElementById('tree');

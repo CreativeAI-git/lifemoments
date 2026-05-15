@@ -1,10 +1,11 @@
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
-import FamilyTree from '@balkangraph/familytree.js';
+import { Component } from '@angular/core';
 import { ApiServiceService } from '../services/api-service.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { loadFamilyTree } from '../utils/load-family-tree';
 @Component({
   selector: 'app-guest-user',
+  standalone: true,
   templateUrl: './guest-user.component.html',
   styleUrls: ['./guest-user.component.css']
 })
@@ -18,7 +19,6 @@ export class GuestUserComponent {
     private toaster: ToastrService,
     public route: ActivatedRoute,
     public router: Router,
-    private renderer: Renderer2
   ) {
     this.route.queryParams.subscribe((params) => {
 
@@ -58,9 +58,10 @@ export class GuestUserComponent {
 
     this.appService
       .createTree_2('share/createNewTree', formData.toString())
-      .subscribe((res) => {
+      .subscribe(async (res) => {
         if (res.success == true) {
           var parent_level = res.familyTreeDetails;
+          const { default: FamilyTree } = await loadFamilyTree();
           FamilyTree.MAX_DEPTH = 1000;
 
           const tree = document.getElementById('tree');

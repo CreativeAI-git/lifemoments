@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from 'src/environment/environment';
 import { Observable } from 'rxjs';
 
 //const API_URL ='http://localhost:4000/'
@@ -29,15 +28,6 @@ export class ApiServiceService {
       .set('content-type', 'application/x-www-form-urlencoded')
       .set('Access-Control-Allow-Origin', '*');
     return this.http.post(API_URL + url, formData, { 'headers': headers })
-  }
-
-  rollBack(url: any, family_id: any): Observable<any> {
-    const headers = new HttpHeaders()
-      .set('content-type', 'application/x-www-form-urlencoded')
-      .set('Access-Control-Allow-Origin', '*');
-    let authData = new URLSearchParams();
-    authData.set('family_id', family_id);
-    return this.http.post(API_URL + url, authData, { 'headers': headers })
   }
 
   get(id: any): Observable<any> {

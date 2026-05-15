@@ -1,11 +1,12 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import FamilyTree from '@balkangraph/familytree.js';
 import { ToastrService } from 'ngx-toastr';
 import { ApiServiceService } from '../services/api-service.service';
+import { loadFamilyTree } from '../utils/load-family-tree';
 
 @Component({
   selector: 'app-reverse-snapshot',
+  standalone: true,
   templateUrl: './reverse-snapshot.component.html',
   styleUrls: ['./reverse-snapshot.component.css']
 })
@@ -19,7 +20,6 @@ export class ReverseSnapshotComponent {
     private toaster: ToastrService,
     public route: ActivatedRoute,
     public router: Router,
-    private renderer: Renderer2
   ) {
     this.route.queryParams.subscribe((params) => {
 
@@ -59,9 +59,10 @@ export class ReverseSnapshotComponent {
 
     this.appService
       .createTree_2('share/createNewTreeReverse', formData.toString())
-      .subscribe((res) => {
+      .subscribe(async (res) => {
         if (res.success == true) {
           var parent_level = res.familyTreeDetails;
+          const { default: FamilyTree } = await loadFamilyTree();
           FamilyTree.MAX_DEPTH = 1000;
 
           const tree = document.getElementById('tree');

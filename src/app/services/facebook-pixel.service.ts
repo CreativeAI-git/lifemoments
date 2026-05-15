@@ -1,32 +1,24 @@
 import { Injectable } from '@angular/core';
-
-declare let fbq: Function;
+import { ThirdPartyScriptsService } from './third-party-scripts.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class FacebookPixelService {
+    constructor(private thirdPartyScripts: ThirdPartyScriptsService) { }
+
+    scheduleLoad() {
+        this.thirdPartyScripts.scheduleTrackingLoad();
+    }
 
     trackPageView() {
-        if (typeof fbq !== 'undefined') {
-            fbq('track', 'PageView');
-        }
+        this.thirdPartyScripts.trackFacebookPageView();
     }
 
     trackStoreRedirect(
         store: 'ios' | 'android',
         position: 'top' | 'bottom'
     ) {
-        if (typeof fbq !== 'undefined') {
-            fbq('track', 'Lead', {
-                store: store,
-                button_position: position
-            });
-
-            fbq('trackCustom', 'App_Store_Click', {
-                store: store,
-                button_position: position
-            });
-        }
+        this.thirdPartyScripts.trackFacebookStoreRedirect(store, position);
     }
 }
