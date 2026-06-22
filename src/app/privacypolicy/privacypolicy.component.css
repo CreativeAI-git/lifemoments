@@ -1,7 +1,7 @@
  .ct_fs_20 {
     font-size: 20px;
     margin-bottom: 20px;
-    font-weight: 600;
+    font-weight: 700;
     font-family: "Open Sans", sans-serif;
   }
   .ct_fs_16 {
@@ -20,8 +20,11 @@
   ul li{
     padding: 0px;
     font-family: "Open Sans", sans-serif;
+    margin-bottom: 5px;
   }
-
+p{
+      font-family: "Open Sans", sans-serif;
+}
   .ct_fs_28{
     font-size: 28px;
     font-weight: 700;
