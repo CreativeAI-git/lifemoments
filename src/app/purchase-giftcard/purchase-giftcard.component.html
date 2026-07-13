@@ -1,0 +1,171 @@
+<div class="ct_privacy_logo">
+  <div class="logo_container d-flex align-items-center justify-content-between">
+    <a routerLink="/" aria-label="Back to home">
+      <img src="assets/ShareLogoEnglish.png" alt="Life's Moments Logo" />
+    </a>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card purchase-card border-0 shadow-lg">
+        <div class="card-header bg-white text-center py-4 border-0">
+          <h2 class="form-title mb-2">Purchase a Gift Card</h2>
+          <p class="text-muted">Give the gift of capturing life's most precious moments to your friends and family.</p>
+        </div>
+        <div class="card-body px-4 px-md-5 pb-5">
+          <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()" novalidate>
+            <!-- Form Grid -->
+            <div class="row g-4">
+              <!-- Plan ID (Dropdown) -->
+              <div class="col-md-12">
+                <label for="plan_id" class="form-label ct-label">Choose Plan *</label>
+                <select id="plan_id" formControlName="plan_id" class="form-select ct_input"
+                  [class.is-invalid]="isFieldInvalid('plan_id')">
+                  <option [value]="2">Monthly Subscription</option>
+                  <option [value]="3">Yearly Subscription</option>
+                </select>
+                <div *ngIf="isFieldInvalid('plan_id')" class="invalid-feedback d-block">
+                  Please choose a valid plan option.
+                </div>
+              </div>
+
+              <!-- Product ID (Read-only Auto Field) -->
+              <!-- <div class="col-md-6">
+                <label for="product_id" class="form-label ct-label">Product SKU</label>
+                <input type="text" id="product_id" formControlName="product_id" class="form-control ct_input bg-light"
+                  readonly />
+              </div> -->
+
+              <!-- Sender Info Section Header -->
+              <div class="col-12 mt-4">
+                <h5 class="section-title">Sender Information</h5>
+                <hr class="mt-1 mb-3" />
+              </div>
+
+              <!-- Sender Name -->
+              <div class="col-md-6">
+                <label for="sender_name" class="form-label ct-label">Sender Name *</label>
+                <input type="text" id="sender_name" formControlName="sender_name" placeholder="Your Name"
+                  class="form-control ct_input" [class.is-invalid]="isFieldInvalid('sender_name')" />
+                <div *ngIf="isFieldInvalid('sender_name')" class="invalid-feedback d-block">
+                  <span *ngIf="purchaseForm.get('sender_name')?.errors?.['required']">Sender name is required.</span>
+                  <span *ngIf="purchaseForm.get('sender_name')?.errors?.['minlength']">Name must be at least 2
+                    characters.</span>
+                </div>
+              </div>
+
+              <!-- Sender Email -->
+              <div class="col-md-6">
+                <label for="sender_email" class="form-label ct-label">Sender Email *</label>
+                <input type="email" id="sender_email" formControlName="sender_email"
+                  placeholder="your.email@example.com" class="form-control ct_input"
+                  [class.is-invalid]="isFieldInvalid('sender_email')" />
+                <div *ngIf="isFieldInvalid('sender_email')" class="invalid-feedback d-block">
+                  <span *ngIf="purchaseForm.get('sender_email')?.errors?.['required']">Sender email is required.</span>
+                  <span *ngIf="purchaseForm.get('sender_email')?.errors?.['email']">Please enter a valid email
+                    address.</span>
+                </div>
+              </div>
+
+              <!-- Receiver Info Section Header -->
+              <div class="col-12 mt-4">
+                <h5 class="section-title">Recipient Information</h5>
+                <hr class="mt-1 mb-3" />
+              </div>
+
+              <!-- Receiver Name -->
+              <div class="col-md-6">
+                <label for="receiver_name" class="form-label ct-label">Recipient Name *</label>
+                <input type="text" id="receiver_name" formControlName="receiver_name" placeholder="Recipient's Name"
+                  class="form-control ct_input" [class.is-invalid]="isFieldInvalid('receiver_name')" />
+                <div *ngIf="isFieldInvalid('receiver_name')" class="invalid-feedback d-block">
+                  <span *ngIf="purchaseForm.get('receiver_name')?.errors?.['required']">Recipient name is
+                    required.</span>
+                  <span *ngIf="purchaseForm.get('receiver_name')?.errors?.['minlength']">Name must be at least 2
+                    characters.</span>
+                </div>
+              </div>
+
+              <!-- Receiver Email -->
+              <div class="col-md-6">
+                <label for="receiver_email" class="form-label ct-label">Recipient Email *</label>
+                <input type="email" id="receiver_email" formControlName="receiver_email"
+                  placeholder="recipient.email@example.com" class="form-control ct_input"
+                  [class.is-invalid]="isFieldInvalid('receiver_email')" />
+                <div *ngIf="isFieldInvalid('receiver_email')" class="invalid-feedback d-block">
+                  <span *ngIf="purchaseForm.get('receiver_email')?.errors?.['required']">Recipient email is
+                    required.</span>
+                  <span *ngIf="purchaseForm.get('receiver_email')?.errors?.['email']">Please enter a valid email
+                    address.</span>
+                </div>
+              </div>
+
+              <!-- Message -->
+              <div class="col-12">
+                <label for="message" class="form-label ct-label">Personal Message (Optional)</label>
+                <textarea id="message" formControlName="message" rows="3"
+                  placeholder="Add a friendly message for the recipient..." class="form-control ct_textarea"
+                  [class.is-invalid]="isFieldInvalid('message')"></textarea>
+                <div class="d-flex justify-content-between mt-1 text-muted small">
+                  <span>Maximum 500 characters.</span>
+                  <span>{{ purchaseForm.get('message')?.value?.length || 0 }}/500</span>
+                </div>
+                <div *ngIf="isFieldInvalid('message')" class="invalid-feedback d-block">
+                  Message cannot exceed 500 characters.
+                </div>
+              </div>
+
+              <!-- Payment Method Section Header -->
+              <div class="col-12 mt-4">
+                <h5 class="section-title">Payment Method *</h5>
+                <hr class="mt-1 mb-3" />
+              </div>
+
+              <!-- Payment Method (Radio Checkboxes) -->
+              <div class="col-12">
+                <div class="payment-options d-flex gap-4">
+                  <!-- PayPal -->
+                  <div class="form-check payment-check flex-fill p-3 rounded border"
+                    [class.payment-selected]="purchaseForm.get('payment_method')?.value === 'paypal'">
+                    <input class="form-check-input ms-0 me-2" type="radio" id="payment_paypal"
+                      formControlName="payment_method" value="paypal" />
+                    <label class="form-check-label w-100 cursor-pointer" for="payment_paypal">
+                      <i class="fab fa-paypal me-2 text-primary"></i> Paypal
+                    </label>
+                  </div>
+
+                  <!-- Stripe -->
+                  <div class="form-check payment-check flex-fill p-3 rounded border"
+                    [class.payment-selected]="purchaseForm.get('payment_method')?.value === 'stripe'">
+                    <input class="form-check-input ms-0 me-2" type="radio" id="payment_stripe"
+                      formControlName="payment_method" value="stripe" />
+                    <label class="form-check-label w-100 cursor-pointer" for="payment_stripe">
+                      <i class="fab fa-cc-stripe me-2 text-info"></i> Stripe
+                    </label>
+                  </div>
+                </div>
+                <div *ngIf="isFieldInvalid('payment_method')" class="invalid-feedback d-block mt-2">
+                  Please select a payment method.
+                </div>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="row mt-5">
+              <div class="col-12">
+                <button type="submit" [disabled]="isSubmitting"
+                  class="ct_blue_btn_fill py-3 fs-5 d-flex align-items-center justify-content-center gap-2">
+                  <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm text-light" role="status"
+                    aria-hidden="true"></span>
+                  <span>{{ isSubmitting ? 'Processing Purchase...' : 'Purchase Gift Card' }}</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

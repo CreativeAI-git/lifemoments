@@ -112,6 +112,10 @@ const routes: Routes = [
     loadComponent: () => import('./landing-page/landing-page.component').then((m) => m.LandingPageComponent)
   },
   {
+    path: 'purchase-giftcard',
+    loadComponent: () => import('./purchase-giftcard/purchase-giftcard.component').then((m) => m.PurchaseGiftcardComponent)
+  },
+  {
     path: ':family_id',
     loadComponent: () => import('./family-tree/family-tree.component').then((m) => m.FamilyTreeComponent)
   },

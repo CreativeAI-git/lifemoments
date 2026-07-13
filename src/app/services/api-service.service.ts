@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 //const API_URL ='http://localhost:4000/'
 
 // const API_URL = 'https://18.229.202.71:4000/'
-const API_URL = 'https://lifesmomentsapp.com:4000/'
+export const API_URL = 'https://lifesmomentsapp.com:4000/'
 
 @Injectable({
   providedIn: 'root'
