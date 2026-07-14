@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class GiftcardService {
-  private apiUrl = 'http://192.168.1.3:4001/' + 'giftcard/purchase';
+  private apiUrl = 'https://lifesmomentsapp.com:4000/';
 
   constructor(private http: HttpClient) { }
 
@@ -14,6 +14,13 @@ export class GiftcardService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
     });
-    return this.http.post<any>(this.apiUrl, payload, { headers });
+    return this.http.post<any>(this.apiUrl + 'giftcard/purchase', payload, { headers });
+  }
+
+  payment(payload: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post<any>(this.apiUrl + 'giftcard/payment', payload, { headers });
   }
 }

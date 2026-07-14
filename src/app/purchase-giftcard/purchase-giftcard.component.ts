@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
 import { GiftcardService } from '../services/giftcard.service';
 
 @Component({
@@ -19,7 +18,6 @@ export class PurchaseGiftcardComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private giftcardService: GiftcardService,
-    private toaster: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -61,24 +59,24 @@ export class PurchaseGiftcardComponent implements OnInit {
 
     this.giftcardService.purchaseGiftcard(payload).subscribe({
       next: (response) => {
-        this.isSubmitting = false;
-        this.toaster.success('Gift card purchased successfully!', 'Success');
-        this.purchaseForm.reset({
-          product_id: 'monthly_gift_card',
-          plan_id: 2,
-          receiver_name: '',
-          receiver_email: '',
-          sender_name: '',
-          sender_email: '',
-          message: '',
-          payment_method: 'paypal'
-        });
+        const PayLoad = {
+          gift_card_id: response.data.gift_card_id,
+          payment_method: response.data.payment_method
+        }
+        this.giftcardService.payment(PayLoad).subscribe({
+          next: (res) => {
+            if (res.success) {
+              window.location.href = res.data.checkout_url;
+            }
+          },
+          error: (err) => {
+            console.error('API Error:', err);
+          }
+        })
       },
       error: (err) => {
         this.isSubmitting = false;
         console.error('API Error:', err);
-        const errMsg = err.error?.message || 'Failed to complete gift card purchase.';
-        this.toaster.error(errMsg, 'Purchase Failed');
       }
     });
   }
