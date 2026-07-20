@@ -14,6 +14,7 @@ import { GiftcardService } from '../services/giftcard.service';
 export class PurchaseGiftcardComponent implements OnInit {
   purchaseForm!: FormGroup;
   isSubmitting = false;
+  isSubmitted = false;
 
   constructor(
     private fb: FormBuilder,
@@ -22,8 +23,8 @@ export class PurchaseGiftcardComponent implements OnInit {
 
   ngOnInit(): void {
     this.purchaseForm = this.fb.group({
-      product_id: ['monthly_gift_card', Validators.required],
-      plan_id: [2, [Validators.required]],
+      product_id: ['annual_gift_card', Validators.required],
+      plan_id: [3, [Validators.required]],
       receiver_name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
       receiver_email: ['', [Validators.required, Validators.email]],
       sender_name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
@@ -43,10 +44,11 @@ export class PurchaseGiftcardComponent implements OnInit {
   // Helper method for easy validation checking in HTML
   isFieldInvalid(fieldName: string): boolean {
     const control = this.purchaseForm.get(fieldName);
-    return !!(control && control.invalid && (control.dirty || control.touched));
+    return !!(control && control.invalid && this.isSubmitted);
   }
 
   onSubmit(): void {
+    this.isSubmitted = true;
     if (this.purchaseForm.invalid) {
       this.purchaseForm.markAllAsTouched();
       // this.toaster.error('Please correct the validation errors in the form.', 'Form Invalid');

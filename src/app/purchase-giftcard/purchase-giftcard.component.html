@@ -18,17 +18,11 @@
           <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()" novalidate>
             <!-- Form Grid -->
             <div class="row g-4">
-              <!-- Plan ID (Dropdown) -->
+              <!-- Plan ID (Disabled Input) -->
               <div class="col-md-12">
                 <label for="plan_id" class="form-label ct-label">Choose Plan *</label>
-                <select id="plan_id" formControlName="plan_id" class="form-select ct_input"
-                  [class.is-invalid]="isFieldInvalid('plan_id')">
-                  <option [value]="2">Monthly Subscription</option>
-                  <option [value]="3">Yearly Subscription</option>
-                </select>
-                <div *ngIf="isFieldInvalid('plan_id')" class="invalid-feedback d-block">
-                  Please choose a valid plan option.
-                </div>
+                <input type="text" id="plan_id" class="form-control ct_input bg-light" value="Yearly Subscription"
+                  disabled />
               </div>
 
               <!-- Product ID (Read-only Auto Field) -->
