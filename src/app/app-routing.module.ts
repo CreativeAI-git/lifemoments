@@ -112,8 +112,12 @@ const routes: Routes = [
     loadComponent: () => import('./landing-page/landing-page.component').then((m) => m.LandingPageComponent)
   },
   {
-    path: 'annualmembership',
+    path: 'test',
     loadComponent: () => import('./purchase-giftcard/purchase-giftcard.component').then((m) => m.PurchaseGiftcardComponent)
+  },
+  {
+    path: 'annualmembership',
+    loadComponent: () => import('./annualmembership/annualmembership.component').then((m) => m.AnnualmembershipComponent)
   },
   {
     path: ':family_id',
