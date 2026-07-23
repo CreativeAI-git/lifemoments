@@ -11,7 +11,7 @@
   position: sticky;
   top: 0px;
   z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .purchase-card {
@@ -115,6 +115,7 @@
   height: 1.2rem;
   margin-top: 0;
   cursor: pointer;
+  border: 1px solid #e6e6e6;
 }
 
 .payment-check input[type="radio"]:checked {
@@ -155,4 +156,21 @@
   font-size: 0.8rem;
   font-family: "Open Sans", sans-serif;
   margin-top: 0.25rem;
+}
+
+.ct_custom_check2 .form-check-input {
+  width: 18px;
+  height: 18px;
+  border: 1px solid #e6e6e6;
+}
+
+.ct_custom_check2 .form-check-input:checked {
+  background-color: #00aa3a;
+  border-color: #00aa3a;
+}
+
+.ct_custom_check2 .form-check-input:focus {
+  box-shadow: unset;
+  border-color: #00aa3a;
+  vertical-align: middle;
 }

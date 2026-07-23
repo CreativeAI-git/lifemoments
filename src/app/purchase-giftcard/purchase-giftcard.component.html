@@ -1,5 +1,5 @@
 <div class="ct_privacy_logo">
-  <div class="logo_container d-flex align-items-center justify-content-between">
+  <div class="logo_container d-flex align-items-center justify-content-center">
     <a routerLink="/" aria-label="Back to home">
       <img src="assets/ShareLogoEnglish.png" alt="Life's Moments Logo" />
     </a>
@@ -63,6 +63,24 @@
                 </div>
               </div>
 
+              <!-- Myself Checkbox -->
+              <div class="col-12 mt-2">
+                <!-- <div class="form-check d-flex align-items-center">
+                  <input class="form-check-input me-2 mt-0" type="radio" id="is_myself"
+                    (change)="onMyselfChange($event)">
+                  <label class="form-check-label ct-label mb-0" for="is_myself">
+                    Myself
+                  </label>
+                </div> -->
+                <div class="form-check ct_custom_check2">
+                  <input class="form-check-input" id="is_myself" (change)="onMyselfChange($event)" type="checkbox"
+                    value="" id="flexCheckDefault">
+                  <label class="form-check-label" for="is_myself">
+                    Myself
+                  </label>
+                </div>
+              </div>
+
               <!-- Receiver Info Section Header -->
               <div class="col-12 mt-4">
                 <h5 class="section-title">Recipient Information</h5>
@@ -111,6 +129,38 @@
                 </div>
               </div>
 
+              <!-- Delivery Options Section Header -->
+              <div class="col-12 mt-4">
+                <h5 class="section-title">Delivery Type</h5>
+                <hr class="mt-1 mb-3" />
+              </div>
+
+              <!-- Delivery Type -->
+              <div class="col-md-6">
+                <label for="delivery_type" class="form-label ct-label">Delivery Schedule *</label>
+                <select id="delivery_type" formControlName="delivery_type" class="form-select ct_input"
+                  [class.is-invalid]="isFieldInvalid('delivery_type')">
+                  <option value="immediate">Immediate</option>
+                  <option value="scheduled">Scheduled</option>
+                </select>
+                <div *ngIf="isFieldInvalid('delivery_type')" class="invalid-feedback d-block">
+                  Please select a delivery option.
+                </div>
+              </div>
+
+              <!-- Scheduled Date Time -->
+              <div class="col-md-6" *ngIf="purchaseForm.get('delivery_type')?.value === 'scheduled'">
+                <label for="scheduled_at" class="form-label ct-label">Select Date *</label>
+                <input type="date" id="scheduled_at" formControlName="scheduled_at"
+                  class="form-control ct_input" [class.is-invalid]="isFieldInvalid('scheduled_at')" [min]="minDate" />
+                <div *ngIf="isFieldInvalid('scheduled_at')" class="invalid-feedback d-block">
+                  <span *ngIf="purchaseForm.get('scheduled_at')?.errors?.['required']">Date is
+                    required.</span>
+                  <span *ngIf="purchaseForm.get('scheduled_at')?.errors?.['pastDate']">Scheduled date cannot be in the
+                    past.</span>
+                </div>
+              </div>
+
               <!-- Payment Method Section Header -->
               <div class="col-12 mt-4">
                 <h5 class="section-title">Payment Method *</h5>
@@ -136,7 +186,7 @@
                     <input class="form-check-input ms-0 me-2" type="radio" id="payment_stripe"
                       formControlName="payment_method" value="stripe" />
                     <label class="form-check-label w-100 cursor-pointer" for="payment_stripe">
-                      <i class="fab fa-cc-stripe me-2 text-info"></i> Stripe
+                      <i class="fa fa-credit-card-alt me-2 text-info"></i> Credit Card
                     </label>
                   </div>
                 </div>
