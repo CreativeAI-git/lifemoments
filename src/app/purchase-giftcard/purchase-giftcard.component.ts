@@ -58,7 +58,7 @@ export class PurchaseGiftcardComponent implements OnInit {
 
     this.purchaseForm = this.fb.group({
       product_id: ['prod_premium_annual', Validators.required],
-      plan_id: [2, [Validators.required]],
+      plan_id: [3, [Validators.required]],
       purchase_type: [this.purchaseType, Validators.required],
       quantity: [1, [Validators.required, Validators.min(1)]],
       sender_name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
@@ -86,7 +86,7 @@ export class PurchaseGiftcardComponent implements OnInit {
     // Auto-update product_id based on plan_id
     this.purchaseForm.get('plan_id')?.valueChanges.subscribe((planId) => {
       const val = Number(planId);
-      const productId = val === 2 ? 'prod_premium_annual' : 'prod_premium_monthly';
+      const productId = val === 3 ? 'prod_premium_annual' : 'prod_premium_monthly';
       this.purchaseForm.get('product_id')?.setValue(productId, { emitEvent: false });
     });
   }
