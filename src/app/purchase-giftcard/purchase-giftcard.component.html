@@ -23,7 +23,6 @@
   <div class="row justify-content-center mb-4">
     <div class="col-md-10 col-lg-8">
       <div class="row">
-        <!-- Buy for Myself Option Card -->
         <div class="col-lg-6 mb-4 mb-lg-0">
           <div
             class="purchase-type-card  flex-fill p-3 border rounded-3 h-100 cursor-pointer d-flex align-items-start gap-3 bg-white shadow-sm"
@@ -49,7 +48,6 @@
           </div>
         </div>
 
-        <!-- Gift to Someone Special Option Card -->
         <div class="col-lg-6 mb-4 mb-lg-0">
           <div
             class="purchase-type-card flex-fill  h-100  p-3 border rounded-3 cursor-pointer d-flex align-items-start gap-3 bg-white shadow-sm"
@@ -119,7 +117,7 @@
               <button class="btn btn-light border-0 px-3 fw-bold fs-5 text-secondary" type="button"
                 (click)="incrementQuantity()">+</button>
             </div>
-            <div
+            <!-- <div
               class="mt-2 text-muted extra-small p-2 bg-light-green border border-success border-opacity-25 rounded-3 d-flex align-items-center gap-2 text-theme-green">
               <i class="fa-solid ct_font_icon_ff"
                 [ngClass]="purchaseType === 'self' ? 'fa-circle-info' : 'fa-gift'"></i>
@@ -129,7 +127,7 @@
                 ' unique membership code(s) on your email after payment.'
                 : 'Please add details for each recipient. Each person will receive a unique membership code.' }}
               </span>
-            </div>
+            </div> -->
           </div>
 
           <!-- STEP 3: Sender Information -->
@@ -216,11 +214,13 @@
             </div>
           </div>
 
-          <!-- STEP (Delivery Type for Gift mode) -->
-          <div *ngIf="purchaseType === 'gift'" class="form-step-group mb-4">
+          <!-- STEP (Delivery Type) -->
+          <div class="form-step-group mb-4">
             <div class="d-flex align-items-center gap-2 mb-3">
               <span
-                class="step-badge rounded-circle text-white fw-bold d-flex align-items-center justify-content-center">5</span>
+                class="step-badge rounded-circle text-white fw-bold d-flex align-items-center justify-content-center">
+                {{ purchaseType === 'gift' ? '5' : '4' }}
+              </span>
               <span class="fw-bold text-dark">Delivery Type</span>
             </div>
             <div class="row g-3">
@@ -235,7 +235,7 @@
                     <div class="fw-bold extra-small text-dark d-flex align-items-center gap-1">
                       <i class="fa-solid fa-paper-plane text-theme-green me-1 ct_font_icon_ff"></i> Send Immediately
                     </div>
-                    <div class="text-muted extra-small">Deliver the gift right away via email</div>
+                    <div class="text-muted extra-small">Deliver right away via email</div>
                   </div>
                 </div>
               </div>
@@ -274,7 +274,7 @@
             <div class="d-flex align-items-center gap-2 mb-3">
               <span
                 class="step-badge rounded-circle text-white fw-bold d-flex align-items-center justify-content-center">
-                {{ purchaseType === 'gift' ? '6' : '4' }}
+                {{ purchaseType === 'gift' ? '6' : '5' }}
               </span>
               <span class="fw-bold text-dark">Payment Method</span>
             </div>
@@ -287,8 +287,7 @@
                   (click)="purchaseForm.get('payment_method')?.setValue('paypal')">
                   <div class="d-flex align-items-center gap-2">
                     <input type="radio" formControlName="payment_method" value="paypal" class="form-check-input mt-0" />
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"
-                      style="height: 20px;" />
+                    <img src="https://lifesmomentsapp.com:4000/public/paypal.svg" alt="PayPal" style="height: 20px;" />
                     <span class="fw-bold extra-small ms-1">PayPal</span>
                   </div>
                 </div>
@@ -330,10 +329,10 @@
             <span class="d-flex align-items-center gap-1">
               <i class="fa-solid ct_font_icon_ff fa-shield-halved text-theme-green"></i> Secure Checkout
             </span>
-            <span>•</span>
+            <!-- <span>•</span>
             <span class="d-flex align-items-center gap-1">
               <i class="fa-solid ct_font_icon_ff fa-rotate-left text-theme-green"></i> 30-Day Money Back Guarantee
-            </span>
+            </span> -->
           </div>
 
           <!-- How it works box (For Buy for Myself) -->

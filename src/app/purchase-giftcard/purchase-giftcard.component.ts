@@ -125,6 +125,7 @@ export class PurchaseGiftcardComponent implements OnInit {
   }
 
   incrementQuantity(): void {
+    if (this.purchaseType == 'self') return;
     const currentVal = parseInt(this.purchaseForm.get('quantity')?.value || 1, 10);
     const newVal = currentVal + 1;
     this.purchaseForm.get('quantity')?.setValue(newVal);
@@ -134,6 +135,7 @@ export class PurchaseGiftcardComponent implements OnInit {
   }
 
   decrementQuantity(): void {
+    if (this.purchaseType == 'self') return;
     const currentVal = parseInt(this.purchaseForm.get('quantity')?.value || 1, 10);
     if (currentVal > 1) {
       const newVal = currentVal - 1;
