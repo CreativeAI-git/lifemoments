@@ -4,7 +4,7 @@
       <img src="assets/ShareLogoEnglish.png" alt="Life's Moments Logo" style="height: 38px;" />
     </a>
   </div>
-  <a routerLink="/" class="text-decoration-none text-dark fw-semibold small d-flex align-items-center gap-1">
+  <a routerLink="/" class="text-decoration-none text-dark fw-semibold text-nowrap small d-flex align-items-center gap-1">
     <i class="fa-solid fa-arrow-left ct_font_icon_ff"></i> Back to Home
   </a>
 </div>
@@ -163,7 +163,7 @@
 
           <!-- STEP 4: Recipients (Only for Gift mode) -->
           <div *ngIf="purchaseType === 'gift'" class="form-step-group mb-4">
-            <div class="d-flex align-items-center justify-content-between mb-3">
+            <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-3">
               <div class="d-flex align-items-center gap-2">
                 <span
                   class="step-badge rounded-circle text-white fw-bold d-flex align-items-center justify-content-center">4</span>
@@ -179,34 +179,34 @@
             <div formArrayName="recipients" class="d-flex flex-column gap-3">
               <div *ngFor="let recipient of recipients.controls; let i = index" [formGroupName]="i"
                 class="p-3 border rounded-3 bg-light-gray position-relative">
-                <div class="row g-2 align-items-center">
-                  <div class="col-auto">
+                <div class="d-flex align-items-center gap-4 " style="overflow-x: scroll;">
+                  <div class="">
                     <span
                       class="recipient-num-badge rounded-circle text-white extra-small fw-bold d-flex align-items-center justify-content-center">
                       {{ i + 1 }}
                     </span>
                   </div>
-                  <div class="col-md">
-                    <label class="form-label extra-small text-muted mb-1">Recipient Name *</label>
-                    <input type="text" formControlName="receiver_name" placeholder="Enter full name"
+                  <div class="">
+                    <label class="form-label extra-small text-muted mb-1 text-nowrap">Recipient Name *</label>
+                    <input type="text" formControlName="receiver_name" style="width: 200px;" placeholder="Enter full name"
                       class="form-select ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched"
                       [class.is-invalid]="isRecipientFieldInvalid(i, 'receiver_name')" />
                   </div>
-                  <div class="col-md">
-                    <label class="form-label extra-small text-muted mb-1">Recipient Email *</label>
-                    <input type="email" formControlName="receiver_email" placeholder="Enter email address"
+                  <div class="">
+                    <label class="form-label extra-small text-muted mb-1 text-nowrap">Recipient Email *</label>
+                    <input type="email" formControlName="receiver_email"  style="width: 200px;" placeholder="Enter email address"
                       class="form-select ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched"
                       [class.is-invalid]="isRecipientFieldInvalid(i, 'receiver_email')" />
                   </div>
-                  <div class="col-md">
-                    <label class="form-label extra-small text-muted mb-1">Personal Message (Optional)</label>
-                    <input type="text" formControlName="message" placeholder="Write a message..."
+                  <div class="">
+                    <label class="form-label extra-small text-muted mb-1 text-nowrap">Personal Message (Optional)</label>
+                    <input type="text" formControlName="message"  style="width: 200px;" placeholder="Write a message..."
                       class="form-select ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched" />
                   </div>
-                  <div class="col-auto d-flex align-items-end pt-3">
+                  <div class=" d-flex align-items-end pt-4">
                     <button *ngIf="recipients.length > 1" type="button" class="btn btn-sm text-danger border-0 p-1"
                       (click)="removeRecipient(i)" title="Remove recipient">
-                      <i class="fa-solid fa-trash"></i>
+                      <i class="fa-solid fa-trash ct_font_icon_ff"></i>
                     </button>
                   </div>
                 </div>
@@ -223,7 +223,7 @@
             </div>
             <div class="row g-3">
               <!-- Send Immediately -->
-              <div class="col-md-6">
+              <div class="col-xl-6">
                 <div
                   class="delivery-option-card p-3 border rounded-3 cursor-pointer d-flex align-items-center gap-3 bg-white"
                   [class.selected]="purchaseForm.get('delivery_type')?.value === 'immediate'"
@@ -239,7 +239,7 @@
               </div>
 
               <!-- Schedule for Later -->
-              <div class="col-md-6">
+              <div class="col-xl-6">
                 <div
                   class="delivery-option-card p-3 border rounded-3 cursor-pointer d-flex align-items-center gap-3 bg-white"
                   [class.selected]="purchaseForm.get('delivery_type')?.value === 'scheduled'"
@@ -258,7 +258,7 @@
             <!-- Date picker if scheduled -->
             <div *ngIf="purchaseForm.get('delivery_type')?.value === 'scheduled'" class="mt-3">
               <label class="form-label extra-small fw-semibold text-dark">Select Scheduled Date & Time *</label>
-              <input type="datetime-local" formControlName="scheduled_at" class="form-control rounded-3" [min]="minDate"
+              <input type="datetime-local" formControlName="scheduled_at" class="form-select ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched" [min]="minDate"
                 [class.is-invalid]="isFieldInvalid('scheduled_at')" />
               <div *ngIf="isFieldInvalid('scheduled_at')" class="invalid-feedback extra-small">
                 Please select a valid future date.
@@ -277,7 +277,7 @@
             </div>
             <div class="row g-3">
               <!-- PayPal -->
-              <div class="col-md-6">
+              <div class="col-xl-6">
                 <div
                   class="payment-card p-3 border rounded-3 cursor-pointer d-flex align-items-center justify-content-between bg-white"
                   [class.selected]="purchaseForm.get('payment_method')?.value === 'paypal'"
@@ -292,7 +292,7 @@
               </div>
 
               <!-- Credit Card -->
-              <div class="col-md-6">
+              <div class="col-xl-6">
                 <div
                   class="payment-card p-3 border rounded-3 cursor-pointer d-flex align-items-center justify-content-between bg-white"
                   [class.selected]="purchaseForm.get('payment_method')?.value === 'stripe'"
