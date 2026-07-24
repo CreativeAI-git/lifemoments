@@ -112,7 +112,7 @@ const routes: Routes = [
     loadComponent: () => import('./landing-page/landing-page.component').then((m) => m.LandingPageComponent)
   },
   {
-    path: 'test',
+    path: 'purchase-giftcard',
     loadComponent: () => import('./purchase-giftcard/purchase-giftcard.component').then((m) => m.PurchaseGiftcardComponent)
   },
   {
