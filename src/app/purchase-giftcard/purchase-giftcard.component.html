@@ -5,31 +5,37 @@
     </a>
   </div>
   <a routerLink="/" class="text-decoration-none text-dark fw-semibold small d-flex align-items-center gap-1">
-    <i class="fa-solid fa-arrow-left"></i> Back to Home
+    <i class="fa-solid fa-arrow-left ct_font_icon_ff"></i> Back to Home
   </a>
 </div>
 
 <div class="container py-4">
   <!-- Top Title & Subtitle -->
   <div class="text-center mb-4">
-    <h2 class="fw-bold text-dark mb-1">Purchase Annual Membership</h2>
+    <h2 class="fw-bold text-dark mb-1 fs-4">Purchase Annual Membership</h2>
     <p class="text-muted mb-0">
-      <span class="text-theme-green fw-bold">🌿</span> Choose how you'd like to purchase and complete your order. <span
-        class="text-theme-green fw-bold">🌿</span>
+      Choose how you'd like to purchase and complete your order. 
     </p>
   </div>
 
   <!-- Mode Selector Buttons -->
   <div class="row justify-content-center mb-4">
     <div class="col-md-10 col-lg-8">
-      <div class="d-flex gap-3">
+      <div class="row">
         <!-- Buy for Myself Option Card -->
+           <div class="col-lg-6 mb-4 mb-lg-0">
         <div
-          class="purchase-type-card flex-fill p-3 border rounded-3 cursor-pointer d-flex align-items-start gap-3 bg-white shadow-sm"
+          class="purchase-type-card  flex-fill p-3 border rounded-3 h-100 cursor-pointer d-flex align-items-start gap-3 bg-white shadow-sm"
           [class.active]="purchaseType === 'self'" (click)="setPurchaseType('self')">
           <div
             class="type-icon-wrapper rounded-circle d-flex align-items-center justify-content-center text-theme-green bg-light-success">
-            <i class="fa-solid fa-user fs-4"></i>
+         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 7.5H21L20 21H4L3 7.5Z" stroke="#31C82D" stroke-width="1.2" stroke-linejoin="round"/>
+<path d="M8 9.5V3H16V9.5" stroke="#31C82D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 17H16" stroke="#31C82D" stroke-width="1.2" stroke-linecap="round"/>
+</svg>
+
+
           </div>
           <div>
             <div class="d-flex align-items-center gap-2">
@@ -41,14 +47,20 @@
             </p>
           </div>
         </div>
+        </div>
 
         <!-- Gift to Someone Special Option Card -->
+         <div class="col-lg-6 mb-4 mb-lg-0">
         <div
-          class="purchase-type-card flex-fill p-3 border rounded-3 cursor-pointer d-flex align-items-start gap-3 bg-white shadow-sm"
+          class="purchase-type-card flex-fill  h-100  p-3 border rounded-3 cursor-pointer d-flex align-items-start gap-3 bg-white shadow-sm"
           [class.active]="purchaseType === 'gift'" (click)="setPurchaseType('gift')">
           <div
             class="type-icon-wrapper rounded-circle d-flex align-items-center justify-content-center text-theme-green bg-light-success">
-            <i class="fa-solid fa-gift fs-4"></i>
+           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.0003 21V12M12.0003 7H7.95032C5.18032 7 5.01032 3 7.95032 3C11.1003 3 12.0003 7 12.0003 7ZM12.0003 7H16.0503C18.9463 7 18.9463 3 16.0503 3C12.9003 3 12.0003 7 12.0003 7Z" stroke="#31C82D" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M20 12V19C20 19.5304 19.7893 20.0391 19.4142 20.4142C19.0391 20.7893 18.5304 21 18 21H6C5.46957 21 4.96086 20.7893 4.58579 20.4142C4.21071 20.0391 4 19.5304 4 19V12M21 12V9C21 8.46957 20.7893 7.96086 20.4142 7.58579C20.0391 7.21071 19.5304 7 19 7H5C4.46957 7 3.96086 7.21071 3.58579 7.58579C3.21071 7.96086 3 8.46957 3 9V12H21Z" stroke="#31C82D" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
           </div>
           <div>
             <div class="d-flex align-items-center gap-2">
@@ -60,6 +72,7 @@
             </p>
           </div>
         </div>
+        </div>
       </div>
     </div>
   </div>
@@ -67,7 +80,7 @@
   <!-- Main Form Card -->
   <div class="row justify-content-center">
     <div class="col-md-10 col-lg-8">
-      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+      <div class="ct_purchase_card_bg">
         <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()" novalidate>
 
           <!-- STEP 1: Select Plan -->
@@ -102,7 +115,7 @@
             <div class="input-group quantity-control-group border rounded-3 overflow-hidden">
               <button class="btn btn-light border-0 px-3 fw-bold fs-5 text-secondary" type="button"
                 (click)="decrementQuantity()">-</button>
-              <input type="number" formControlName="quantity"
+              <input type="number" formControlName="quantity" [readOnly]=""
                 class="form-control border-0 text-center fw-bold fs-5 shadow-none bg-white"
                 (input)="onQuantityChange($event)" min="1" readonly />
               <button class="btn btn-light border-0 px-3 fw-bold fs-5 text-secondary" type="button"
@@ -110,7 +123,7 @@
             </div>
             <div
               class="mt-2 text-muted extra-small p-2 bg-light-green border border-success border-opacity-25 rounded-3 d-flex align-items-center gap-2 text-theme-green">
-              <i class="fa-solid" [ngClass]="purchaseType === 'self' ? 'fa-circle-info' : 'fa-gift'"></i>
+              <i class="fa-solid ct_font_icon_ff" [ngClass]="purchaseType === 'self' ? 'fa-circle-info' : 'fa-gift'"></i>
               <span>
                 {{ purchaseType === 'self'
                 ? 'You will receive ' + (purchaseForm.get('quantity')?.value || 1) + ' unique membership code(s) on your
@@ -132,7 +145,7 @@
               <div class="col-md-6">
                 <label class="form-label extra-small fw-semibold text-dark mb-1">Your Name *</label>
                 <input type="text" formControlName="sender_name" placeholder="Enter your full name"
-                  class="form-control rounded-3" [class.is-invalid]="isFieldInvalid('sender_name')" />
+                  class="form-select ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched" [class.is-invalid]="isFieldInvalid('sender_name')" />
                 <div *ngIf="isFieldInvalid('sender_name')" class="invalid-feedback extra-small">
                   Name is required (min 2 chars).
                 </div>
@@ -140,7 +153,7 @@
               <div class="col-md-6">
                 <label class="form-label extra-small fw-semibold text-dark mb-1">Your Email *</label>
                 <input type="email" formControlName="sender_email" placeholder="Enter your email address"
-                  class="form-control rounded-3" [class.is-invalid]="isFieldInvalid('sender_email')" />
+                  class="form-select ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched" [class.is-invalid]="isFieldInvalid('sender_email')" />
                 <div *ngIf="isFieldInvalid('sender_email')" class="invalid-feedback extra-small">
                   Please enter a valid email address.
                 </div>
@@ -159,7 +172,7 @@
               <button type="button"
                 class="btn btn-link text-theme-green text-decoration-none extra-small fw-bold p-0 d-flex align-items-center gap-1"
                 (click)="addRecipient()">
-                <i class="fa-solid fa-circle-plus"></i> Add Another Recipient
+                <i class="fa-solid fa-circle-plus ct_font_icon_ff"></i> Add Another Recipient
               </button>
             </div>
 
@@ -176,19 +189,19 @@
                   <div class="col-md">
                     <label class="form-label extra-small text-muted mb-1">Recipient Name *</label>
                     <input type="text" formControlName="receiver_name" placeholder="Enter full name"
-                      class="form-control form-control-sm rounded-2"
+                      class="form-select ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched"
                       [class.is-invalid]="isRecipientFieldInvalid(i, 'receiver_name')" />
                   </div>
                   <div class="col-md">
                     <label class="form-label extra-small text-muted mb-1">Recipient Email *</label>
                     <input type="email" formControlName="receiver_email" placeholder="Enter email address"
-                      class="form-control form-control-sm rounded-2"
+                      class="form-select ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched"
                       [class.is-invalid]="isRecipientFieldInvalid(i, 'receiver_email')" />
                   </div>
                   <div class="col-md">
                     <label class="form-label extra-small text-muted mb-1">Personal Message (Optional)</label>
                     <input type="text" formControlName="message" placeholder="Write a message..."
-                      class="form-control form-control-sm rounded-2" />
+                      class="form-select ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched" />
                   </div>
                   <div class="col-auto d-flex align-items-end pt-3">
                     <button *ngIf="recipients.length > 1" type="button" class="btn btn-sm text-danger border-0 p-1"
@@ -218,7 +231,7 @@
                   <input type="radio" formControlName="delivery_type" value="immediate" class="form-check-input mt-0" />
                   <div>
                     <div class="fw-bold extra-small text-dark d-flex align-items-center gap-1">
-                      <i class="fa-solid fa-paper-plane text-theme-green me-1"></i> Send Immediately
+                      <i class="fa-solid fa-paper-plane text-theme-green me-1 ct_font_icon_ff"></i> Send Immediately
                     </div>
                     <div class="text-muted extra-small">Deliver the gift right away via email</div>
                   </div>
@@ -234,7 +247,7 @@
                   <input type="radio" formControlName="delivery_type" value="scheduled" class="form-check-input mt-0" />
                   <div>
                     <div class="fw-bold extra-small text-dark d-flex align-items-center gap-1">
-                      <i class="fa-solid fa-calendar-days text-primary me-1"></i> Schedule for Later
+                      <i class="fa-solid fa-calendar-days ct_font_icon_ff text-primary me-1"></i> Schedule for Later
                     </div>
                     <div class="text-muted extra-small">Choose a date and time to send.</div>
                   </div>
@@ -286,7 +299,7 @@
                   (click)="purchaseForm.get('payment_method')?.setValue('stripe')">
                   <div class="d-flex align-items-center gap-2">
                     <input type="radio" formControlName="payment_method" value="stripe" class="form-check-input mt-0" />
-                    <i class="fa-solid fa-credit-card text-secondary"></i>
+                    <i class="fa-solid fa-credit-card text-secondary ct_font_icon_ff"></i>
                     <span class="fw-bold extra-small ms-1">Credit Card</span>
                   </div>
                   <div class="d-flex gap-1">
@@ -302,8 +315,8 @@
           <!-- Submit Button -->
           <div class="mt-4">
             <button type="submit" [disabled]="isSubmitting"
-              class="btn btn-theme-green w-100 py-3 rounded-3 fw-bold fs-5 d-flex align-items-center justify-content-center gap-2 shadow-sm">
-              <i class="fa-solid fa-lock"></i>
+              class="btn btn-theme-green w-100 py-3 fs-6 rounded-3 fw-bold fs-5 d-flex align-items-center justify-content-center gap-2 shadow-sm">
+              
               <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm text-light" role="status"></span>
               <span>{{ isSubmitting ? 'Processing...' : 'Continue to Payment' }}</span>
             </button>
@@ -312,11 +325,11 @@
           <!-- Guarantees & Info footer -->
           <div class="d-flex align-items-center justify-content-center gap-4 mt-3 text-muted extra-small">
             <span class="d-flex align-items-center gap-1">
-              <i class="fa-solid fa-shield-halved text-theme-green"></i> Secure Checkout
+              <i class="fa-solid ct_font_icon_ff fa-shield-halved text-theme-green"></i> Secure Checkout
             </span>
             <span>•</span>
             <span class="d-flex align-items-center gap-1">
-              <i class="fa-solid fa-rotate-left text-theme-green"></i> 30-Day Money Back Guarantee
+              <i class="fa-solid ct_font_icon_ff fa-rotate-left text-theme-green"></i> 30-Day Money Back Guarantee
             </span>
           </div>
 
@@ -324,7 +337,7 @@
           <div *ngIf="purchaseType === 'self'"
             class="mt-4 p-3 rounded-3 bg-light-green border border-success border-opacity-25 d-flex align-items-start gap-3">
             <div class="text-theme-green fs-4 mt-1">
-              <i class="fa-solid fa-gift"></i>
+              <i class="fa-solid fa-gift ct_font_icon_ff"></i>
             </div>
             <div>
               <div class="fw-bold text-theme-green extra-small">How it works?</div>
