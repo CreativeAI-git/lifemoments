@@ -1678,9 +1678,8 @@
             <div class="zpelem-col zpcol-12 zpcol-md-12 zpcol-sm-12 zpalign-self- zpdefault-section zpdefault-section-bg">
                 <h5 data-editor="true" class="zpheading zpheading-style-none zpheading-align-tablet-center"><span style="font-size: 18px; font-family: &quot;Open Sans&quot;, sans-serif;"><strong>Life’s Moments Annual Membership </strong></span><br></h5>
                 <div class="d-flex align-items-center justify-content-center gap-3 mt-4 flex-wrap">
-                    <button class="ct_green_btn flex-shrink-0">Buy for myself</button>
-                    <button class="ct_green_btn flex-shrink-0">Gift to someone special</button>
-
+                    <a routerLink="/purchase-giftcard" [queryParams]="{ type: 'self' }" class="ct_green_btn flex-shrink-0 text-decoration-none d-inline-block text-center">Buy for myself</a>
+                    <a routerLink="/purchase-giftcard" [queryParams]="{ type: 'gift' }" class="ct_green_btn flex-shrink-0 text-decoration-none d-inline-block text-center">Gift to someone special</a>
                 </div>
             </div>
         </div>

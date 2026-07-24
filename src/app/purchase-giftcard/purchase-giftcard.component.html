@@ -1,214 +1,341 @@
-<div class="ct_privacy_logo">
-  <div class="logo_container d-flex align-items-center justify-content-center">
-    <a routerLink="/" aria-label="Back to home">
-      <img src="assets/ShareLogoEnglish.png" alt="Life's Moments Logo" />
+<div class="purchase-page-header d-flex justify-content-between align-items-center px-4 py-3 bg-white border-bottom">
+  <div class="d-flex align-items-center gap-2">
+    <a routerLink="/" aria-label="Back to home" class="d-flex align-items-center gap-2 text-decoration-none">
+      <img src="assets/ShareLogoEnglish.png" alt="Life's Moments Logo" style="height: 38px;" />
     </a>
   </div>
+  <a routerLink="/" class="text-decoration-none text-dark fw-semibold small d-flex align-items-center gap-1">
+    <i class="fa-solid fa-arrow-left"></i> Back to Home
+  </a>
 </div>
 
-<div class="container py-5">
+<div class="container py-4">
+  <!-- Top Title & Subtitle -->
+  <div class="text-center mb-4">
+    <h2 class="fw-bold text-dark mb-1">Purchase Annual Membership</h2>
+    <p class="text-muted mb-0">
+      <span class="text-theme-green fw-bold">🌿</span> Choose how you'd like to purchase and complete your order. <span
+        class="text-theme-green fw-bold">🌿</span>
+    </p>
+  </div>
+
+  <!-- Mode Selector Buttons -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-md-10 col-lg-8">
+      <div class="d-flex gap-3">
+        <!-- Buy for Myself Option Card -->
+        <div
+          class="purchase-type-card flex-fill p-3 border rounded-3 cursor-pointer d-flex align-items-start gap-3 bg-white shadow-sm"
+          [class.active]="purchaseType === 'self'" (click)="setPurchaseType('self')">
+          <div
+            class="type-icon-wrapper rounded-circle d-flex align-items-center justify-content-center text-theme-green bg-light-success">
+            <i class="fa-solid fa-user fs-4"></i>
+          </div>
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <span class="fw-bold text-dark">Buy for Myself</span>
+              <span class="badge bg-theme-green rounded-pill px-2 py-1 extra-small">NEW</span>
+            </div>
+            <p class="text-muted mb-0 extra-small mt-1">
+              Buy one or more memberships for yourself. You will receive the membership codes on your email.
+            </p>
+          </div>
+        </div>
+
+        <!-- Gift to Someone Special Option Card -->
+        <div
+          class="purchase-type-card flex-fill p-3 border rounded-3 cursor-pointer d-flex align-items-start gap-3 bg-white shadow-sm"
+          [class.active]="purchaseType === 'gift'" (click)="setPurchaseType('gift')">
+          <div
+            class="type-icon-wrapper rounded-circle d-flex align-items-center justify-content-center text-theme-green bg-light-success">
+            <i class="fa-solid fa-gift fs-4"></i>
+          </div>
+          <div>
+            <div class="d-flex align-items-center gap-2">
+              <span class="fw-bold text-dark">Gift to Someone Special</span>
+              <span class="badge bg-theme-green rounded-pill px-2 py-1 extra-small">NEW</span>
+            </div>
+            <p class="text-muted mb-0 extra-small mt-1">
+              Send an annual membership as a gift to your loved ones.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Form Card -->
   <div class="row justify-content-center">
-    <div class="col-lg-8 col-md-10">
-      <div class="card purchase-card border-0 shadow-lg">
-        <div class="card-header bg-white text-center py-4 border-0">
-          <h2 class="form-title mb-2">Purchase a Gift Card</h2>
-          <p class="text-muted">Give the gift of capturing life's most precious moments to your friends and family.</p>
-        </div>
-        <div class="card-body px-4 px-md-5 pb-5">
-          <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()" novalidate>
-            <!-- Form Grid -->
-            <div class="row g-4">
-              <!-- Plan ID (Disabled Input) -->
-              <div class="col-md-12">
-                <label for="plan_id" class="form-label ct-label">Choose Plan *</label>
-                <input type="text" id="plan_id" class="form-control ct_input bg-light" value="Yearly Subscription"
-                  disabled />
-              </div>
+    <div class="col-md-10 col-lg-8">
+      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+        <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()" novalidate>
 
-              <!-- Product ID (Read-only Auto Field) -->
-              <!-- <div class="col-md-6">
-                <label for="product_id" class="form-label ct-label">Product SKU</label>
-                <input type="text" id="product_id" formControlName="product_id" class="form-control ct_input bg-light"
-                  readonly />
-              </div> -->
+          <!-- STEP 1: Select Plan -->
+          <div class="form-step-group mb-4">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span
+                class="step-badge rounded-circle text-white fw-bold d-flex align-items-center justify-content-center">1</span>
+              <span class="fw-bold text-dark">Select Plan</span>
+            </div>
+            <select formControlName="plan_id" class="form-select ct_input fw-semibold text-dark rounded-3"
+              [class.is-invalid]="isFieldInvalid('plan_id')">
+              <option [value]="2">Annual Subscription</option>
+              <option [value]="1">Monthly Subscription</option>
+            </select>
+            <div *ngIf="isFieldInvalid('plan_id')" class="invalid-feedback extra-small">
+              Please select a plan.
+            </div>
+          </div>
 
-              <!-- Sender Info Section Header -->
-              <div class="col-12 mt-4">
-                <h5 class="section-title">Sender Information</h5>
-                <hr class="mt-1 mb-3" />
-              </div>
+          <!-- STEP 2: Number of Memberships / Gifts -->
+          <div class="form-step-group mb-4">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span
+                class="step-badge rounded-circle text-white fw-bold d-flex align-items-center justify-content-center">2</span>
+              <span class="fw-bold text-dark">{{ purchaseType === 'self' ? 'Number of Memberships' : 'Number of Gifts'
+                }}</span>
+            </div>
+            <p class="text-muted extra-small mb-2">
+              {{ purchaseType === 'self' ? 'How many membership codes do you want to purchase?' : 'How many gifts do you
+              want to send?' }}
+            </p>
+            <div class="input-group quantity-control-group border rounded-3 overflow-hidden">
+              <button class="btn btn-light border-0 px-3 fw-bold fs-5 text-secondary" type="button"
+                (click)="decrementQuantity()">-</button>
+              <input type="number" formControlName="quantity"
+                class="form-control border-0 text-center fw-bold fs-5 shadow-none bg-white"
+                (input)="onQuantityChange($event)" min="1" readonly />
+              <button class="btn btn-light border-0 px-3 fw-bold fs-5 text-secondary" type="button"
+                (click)="incrementQuantity()">+</button>
+            </div>
+            <div
+              class="mt-2 text-muted extra-small p-2 bg-light-green border border-success border-opacity-25 rounded-3 d-flex align-items-center gap-2 text-theme-green">
+              <i class="fa-solid" [ngClass]="purchaseType === 'self' ? 'fa-circle-info' : 'fa-gift'"></i>
+              <span>
+                {{ purchaseType === 'self'
+                ? 'You will receive ' + (purchaseForm.get('quantity')?.value || 1) + ' unique membership code(s) on your
+                email after payment.'
+                : 'Please add details for each recipient. Each person will receive a unique membership code.' }}
+              </span>
+            </div>
+          </div>
 
-              <!-- Sender Name -->
+          <!-- STEP 3: Sender Information -->
+          <div class="form-step-group mb-4">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <span
+                class="step-badge rounded-circle text-white fw-bold d-flex align-items-center justify-content-center">3</span>
+              <span class="fw-bold text-dark">{{ purchaseType === 'self' ? 'Your Information' : 'Sender Information'
+                }}</span>
+            </div>
+            <div class="row g-3">
               <div class="col-md-6">
-                <label for="sender_name" class="form-label ct-label">Sender Name *</label>
-                <input type="text" id="sender_name" formControlName="sender_name" placeholder="Your Name"
-                  class="form-control ct_input" [class.is-invalid]="isFieldInvalid('sender_name')" />
-                <div *ngIf="isFieldInvalid('sender_name')" class="invalid-feedback d-block">
-                  <span *ngIf="purchaseForm.get('sender_name')?.errors?.['required']">Sender name is required.</span>
-                  <span *ngIf="purchaseForm.get('sender_name')?.errors?.['minlength']">Name must be at least 2
-                    characters.</span>
+                <label class="form-label extra-small fw-semibold text-dark mb-1">Your Name *</label>
+                <input type="text" formControlName="sender_name" placeholder="Enter your full name"
+                  class="form-control rounded-3" [class.is-invalid]="isFieldInvalid('sender_name')" />
+                <div *ngIf="isFieldInvalid('sender_name')" class="invalid-feedback extra-small">
+                  Name is required (min 2 chars).
                 </div>
               </div>
-
-              <!-- Sender Email -->
               <div class="col-md-6">
-                <label for="sender_email" class="form-label ct-label">Sender Email *</label>
-                <input type="email" id="sender_email" formControlName="sender_email"
-                  placeholder="your.email@example.com" class="form-control ct_input"
-                  [class.is-invalid]="isFieldInvalid('sender_email')" />
-                <div *ngIf="isFieldInvalid('sender_email')" class="invalid-feedback d-block">
-                  <span *ngIf="purchaseForm.get('sender_email')?.errors?.['required']">Sender email is required.</span>
-                  <span *ngIf="purchaseForm.get('sender_email')?.errors?.['email']">Please enter a valid email
-                    address.</span>
+                <label class="form-label extra-small fw-semibold text-dark mb-1">Your Email *</label>
+                <input type="email" formControlName="sender_email" placeholder="Enter your email address"
+                  class="form-control rounded-3" [class.is-invalid]="isFieldInvalid('sender_email')" />
+                <div *ngIf="isFieldInvalid('sender_email')" class="invalid-feedback extra-small">
+                  Please enter a valid email address.
                 </div>
               </div>
+            </div>
+          </div>
 
-              <!-- Myself Checkbox -->
-              <div class="col-12 mt-2">
-                <!-- <div class="form-check d-flex align-items-center">
-                  <input class="form-check-input me-2 mt-0" type="radio" id="is_myself"
-                    (change)="onMyselfChange($event)">
-                  <label class="form-check-label ct-label mb-0" for="is_myself">
-                    Myself
-                  </label>
-                </div> -->
-                <div class="form-check ct_custom_check2">
-                  <input class="form-check-input" id="is_myself" (change)="onMyselfChange($event)" type="checkbox"
-                    value="" id="flexCheckDefault">
-                  <label class="form-check-label" for="is_myself">
-                    Myself
-                  </label>
-                </div>
+          <!-- STEP 4: Recipients (Only for Gift mode) -->
+          <div *ngIf="purchaseType === 'gift'" class="form-step-group mb-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <div class="d-flex align-items-center gap-2">
+                <span
+                  class="step-badge rounded-circle text-white fw-bold d-flex align-items-center justify-content-center">4</span>
+                <span class="fw-bold text-dark">Recipients ({{ recipients.length }})</span>
               </div>
+              <button type="button"
+                class="btn btn-link text-theme-green text-decoration-none extra-small fw-bold p-0 d-flex align-items-center gap-1"
+                (click)="addRecipient()">
+                <i class="fa-solid fa-circle-plus"></i> Add Another Recipient
+              </button>
+            </div>
 
-              <!-- Receiver Info Section Header -->
-              <div class="col-12 mt-4">
-                <h5 class="section-title">Recipient Information</h5>
-                <hr class="mt-1 mb-3" />
-              </div>
-
-              <!-- Receiver Name -->
-              <div class="col-md-6">
-                <label for="receiver_name" class="form-label ct-label">Recipient Name *</label>
-                <input type="text" id="receiver_name" formControlName="receiver_name" placeholder="Recipient's Name"
-                  class="form-control ct_input" [class.is-invalid]="isFieldInvalid('receiver_name')" />
-                <div *ngIf="isFieldInvalid('receiver_name')" class="invalid-feedback d-block">
-                  <span *ngIf="purchaseForm.get('receiver_name')?.errors?.['required']">Recipient name is
-                    required.</span>
-                  <span *ngIf="purchaseForm.get('receiver_name')?.errors?.['minlength']">Name must be at least 2
-                    characters.</span>
-                </div>
-              </div>
-
-              <!-- Receiver Email -->
-              <div class="col-md-6">
-                <label for="receiver_email" class="form-label ct-label">Recipient Email *</label>
-                <input type="email" id="receiver_email" formControlName="receiver_email"
-                  placeholder="recipient.email@example.com" class="form-control ct_input"
-                  [class.is-invalid]="isFieldInvalid('receiver_email')" />
-                <div *ngIf="isFieldInvalid('receiver_email')" class="invalid-feedback d-block">
-                  <span *ngIf="purchaseForm.get('receiver_email')?.errors?.['required']">Recipient email is
-                    required.</span>
-                  <span *ngIf="purchaseForm.get('receiver_email')?.errors?.['email']">Please enter a valid email
-                    address.</span>
-                </div>
-              </div>
-
-              <!-- Message -->
-              <div class="col-12">
-                <label for="message" class="form-label ct-label">Personal Message (Optional)</label>
-                <textarea id="message" formControlName="message" rows="3"
-                  placeholder="Add a friendly message for the recipient..." class="form-control ct_textarea"
-                  [class.is-invalid]="isFieldInvalid('message')"></textarea>
-                <div class="d-flex justify-content-between mt-1 text-muted small">
-                  <span>Maximum 500 characters.</span>
-                  <span>{{ purchaseForm.get('message')?.value?.length || 0 }}/500</span>
-                </div>
-                <div *ngIf="isFieldInvalid('message')" class="invalid-feedback d-block">
-                  Message cannot exceed 500 characters.
-                </div>
-              </div>
-
-              <!-- Delivery Options Section Header -->
-              <div class="col-12 mt-4">
-                <h5 class="section-title">Delivery Type</h5>
-                <hr class="mt-1 mb-3" />
-              </div>
-
-              <!-- Delivery Type -->
-              <div class="col-md-6">
-                <label for="delivery_type" class="form-label ct-label">Delivery Schedule *</label>
-                <select id="delivery_type" formControlName="delivery_type" class="form-select ct_input"
-                  [class.is-invalid]="isFieldInvalid('delivery_type')">
-                  <option value="immediate">Immediate</option>
-                  <option value="scheduled">Scheduled</option>
-                </select>
-                <div *ngIf="isFieldInvalid('delivery_type')" class="invalid-feedback d-block">
-                  Please select a delivery option.
-                </div>
-              </div>
-
-              <!-- Scheduled Date Time -->
-              <div class="col-md-6" *ngIf="purchaseForm.get('delivery_type')?.value === 'scheduled'">
-                <label for="scheduled_at" class="form-label ct-label">Select Date *</label>
-                <input type="date" id="scheduled_at" formControlName="scheduled_at"
-                  class="form-control ct_input" [class.is-invalid]="isFieldInvalid('scheduled_at')" [min]="minDate" />
-                <div *ngIf="isFieldInvalid('scheduled_at')" class="invalid-feedback d-block">
-                  <span *ngIf="purchaseForm.get('scheduled_at')?.errors?.['required']">Date is
-                    required.</span>
-                  <span *ngIf="purchaseForm.get('scheduled_at')?.errors?.['pastDate']">Scheduled date cannot be in the
-                    past.</span>
-                </div>
-              </div>
-
-              <!-- Payment Method Section Header -->
-              <div class="col-12 mt-4">
-                <h5 class="section-title">Payment Method *</h5>
-                <hr class="mt-1 mb-3" />
-              </div>
-
-              <!-- Payment Method (Radio Checkboxes) -->
-              <div class="col-12">
-                <div class="payment-options d-flex gap-4">
-                  <!-- PayPal -->
-                  <div class="form-check payment-check flex-fill p-3 rounded border"
-                    [class.payment-selected]="purchaseForm.get('payment_method')?.value === 'paypal'">
-                    <input class="form-check-input ms-0 me-2" type="radio" id="payment_paypal"
-                      formControlName="payment_method" value="paypal" />
-                    <label class="form-check-label w-100 cursor-pointer" for="payment_paypal">
-                      <i class="fab fa-paypal me-2 text-primary"></i> Paypal
-                    </label>
+            <div formArrayName="recipients" class="d-flex flex-column gap-3">
+              <div *ngFor="let recipient of recipients.controls; let i = index" [formGroupName]="i"
+                class="p-3 border rounded-3 bg-light-gray position-relative">
+                <div class="row g-2 align-items-center">
+                  <div class="col-auto">
+                    <span
+                      class="recipient-num-badge rounded-circle text-white extra-small fw-bold d-flex align-items-center justify-content-center">
+                      {{ i + 1 }}
+                    </span>
                   </div>
-
-                  <!-- Stripe -->
-                  <div class="form-check payment-check flex-fill p-3 rounded border"
-                    [class.payment-selected]="purchaseForm.get('payment_method')?.value === 'stripe'">
-                    <input class="form-check-input ms-0 me-2" type="radio" id="payment_stripe"
-                      formControlName="payment_method" value="stripe" />
-                    <label class="form-check-label w-100 cursor-pointer" for="payment_stripe">
-                      <i class="fa fa-credit-card-alt me-2 text-info"></i> Credit Card
-                    </label>
+                  <div class="col-md">
+                    <label class="form-label extra-small text-muted mb-1">Recipient Name *</label>
+                    <input type="text" formControlName="receiver_name" placeholder="Enter full name"
+                      class="form-control form-control-sm rounded-2"
+                      [class.is-invalid]="isRecipientFieldInvalid(i, 'receiver_name')" />
+                  </div>
+                  <div class="col-md">
+                    <label class="form-label extra-small text-muted mb-1">Recipient Email *</label>
+                    <input type="email" formControlName="receiver_email" placeholder="Enter email address"
+                      class="form-control form-control-sm rounded-2"
+                      [class.is-invalid]="isRecipientFieldInvalid(i, 'receiver_email')" />
+                  </div>
+                  <div class="col-md">
+                    <label class="form-label extra-small text-muted mb-1">Personal Message (Optional)</label>
+                    <input type="text" formControlName="message" placeholder="Write a message..."
+                      class="form-control form-control-sm rounded-2" />
+                  </div>
+                  <div class="col-auto d-flex align-items-end pt-3">
+                    <button *ngIf="recipients.length > 1" type="button" class="btn btn-sm text-danger border-0 p-1"
+                      (click)="removeRecipient(i)" title="Remove recipient">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
                   </div>
                 </div>
-                <div *ngIf="isFieldInvalid('payment_method')" class="invalid-feedback d-block mt-2">
-                  Please select a payment method.
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP (Delivery Type for Gift mode) -->
+          <div *ngIf="purchaseType === 'gift'" class="form-step-group mb-4">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <span
+                class="step-badge rounded-circle text-white fw-bold d-flex align-items-center justify-content-center">5</span>
+              <span class="fw-bold text-dark">Delivery Type</span>
+            </div>
+            <div class="row g-3">
+              <!-- Send Immediately -->
+              <div class="col-md-6">
+                <div
+                  class="delivery-option-card p-3 border rounded-3 cursor-pointer d-flex align-items-center gap-3 bg-white"
+                  [class.selected]="purchaseForm.get('delivery_type')?.value === 'immediate'"
+                  (click)="purchaseForm.get('delivery_type')?.setValue('immediate')">
+                  <input type="radio" formControlName="delivery_type" value="immediate" class="form-check-input mt-0" />
+                  <div>
+                    <div class="fw-bold extra-small text-dark d-flex align-items-center gap-1">
+                      <i class="fa-solid fa-paper-plane text-theme-green me-1"></i> Send Immediately
+                    </div>
+                    <div class="text-muted extra-small">Deliver the gift right away via email</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Schedule for Later -->
+              <div class="col-md-6">
+                <div
+                  class="delivery-option-card p-3 border rounded-3 cursor-pointer d-flex align-items-center gap-3 bg-white"
+                  [class.selected]="purchaseForm.get('delivery_type')?.value === 'scheduled'"
+                  (click)="purchaseForm.get('delivery_type')?.setValue('scheduled')">
+                  <input type="radio" formControlName="delivery_type" value="scheduled" class="form-check-input mt-0" />
+                  <div>
+                    <div class="fw-bold extra-small text-dark d-flex align-items-center gap-1">
+                      <i class="fa-solid fa-calendar-days text-primary me-1"></i> Schedule for Later
+                    </div>
+                    <div class="text-muted extra-small">Choose a date and time to send.</div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <!-- Submit Button -->
-            <div class="row mt-5">
-              <div class="col-12">
-                <button type="submit" [disabled]="isSubmitting"
-                  class="ct_blue_btn_fill py-3 fs-5 d-flex align-items-center justify-content-center gap-2">
-                  <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm text-light" role="status"
-                    aria-hidden="true"></span>
-                  <span>{{ isSubmitting ? 'Processing Purchase...' : 'Purchase Gift Card' }}</span>
-                </button>
+            <!-- Date picker if scheduled -->
+            <div *ngIf="purchaseForm.get('delivery_type')?.value === 'scheduled'" class="mt-3">
+              <label class="form-label extra-small fw-semibold text-dark">Select Scheduled Date & Time *</label>
+              <input type="datetime-local" formControlName="scheduled_at" class="form-control rounded-3" [min]="minDate"
+                [class.is-invalid]="isFieldInvalid('scheduled_at')" />
+              <div *ngIf="isFieldInvalid('scheduled_at')" class="invalid-feedback extra-small">
+                Please select a valid future date.
               </div>
             </div>
-          </form>
-        </div>
+          </div>
+
+          <!-- STEP Payment Method -->
+          <div class="form-step-group mb-4">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <span
+                class="step-badge rounded-circle text-white fw-bold d-flex align-items-center justify-content-center">
+                {{ purchaseType === 'gift' ? '6' : '4' }}
+              </span>
+              <span class="fw-bold text-dark">Payment Method</span>
+            </div>
+            <div class="row g-3">
+              <!-- PayPal -->
+              <div class="col-md-6">
+                <div
+                  class="payment-card p-3 border rounded-3 cursor-pointer d-flex align-items-center justify-content-between bg-white"
+                  [class.selected]="purchaseForm.get('payment_method')?.value === 'paypal'"
+                  (click)="purchaseForm.get('payment_method')?.setValue('paypal')">
+                  <div class="d-flex align-items-center gap-2">
+                    <input type="radio" formControlName="payment_method" value="paypal" class="form-check-input mt-0" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal"
+                      style="height: 20px;" />
+                    <span class="fw-bold extra-small ms-1">PayPal</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Credit Card -->
+              <div class="col-md-6">
+                <div
+                  class="payment-card p-3 border rounded-3 cursor-pointer d-flex align-items-center justify-content-between bg-white"
+                  [class.selected]="purchaseForm.get('payment_method')?.value === 'stripe'"
+                  (click)="purchaseForm.get('payment_method')?.setValue('stripe')">
+                  <div class="d-flex align-items-center gap-2">
+                    <input type="radio" formControlName="payment_method" value="stripe" class="form-check-input mt-0" />
+                    <i class="fa-solid fa-credit-card text-secondary"></i>
+                    <span class="fw-bold extra-small ms-1">Credit Card</span>
+                  </div>
+                  <div class="d-flex gap-1">
+                    <span class="badge bg-light text-dark border extra-small px-1">VISA</span>
+                    <span class="badge bg-light text-dark border extra-small px-1">MC</span>
+                    <span class="badge bg-light text-dark border extra-small px-1">AMEX</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="mt-4">
+            <button type="submit" [disabled]="isSubmitting"
+              class="btn btn-theme-green w-100 py-3 rounded-3 fw-bold fs-5 d-flex align-items-center justify-content-center gap-2 shadow-sm">
+              <i class="fa-solid fa-lock"></i>
+              <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm text-light" role="status"></span>
+              <span>{{ isSubmitting ? 'Processing...' : 'Continue to Payment' }}</span>
+            </button>
+          </div>
+
+          <!-- Guarantees & Info footer -->
+          <div class="d-flex align-items-center justify-content-center gap-4 mt-3 text-muted extra-small">
+            <span class="d-flex align-items-center gap-1">
+              <i class="fa-solid fa-shield-halved text-theme-green"></i> Secure Checkout
+            </span>
+            <span>•</span>
+            <span class="d-flex align-items-center gap-1">
+              <i class="fa-solid fa-rotate-left text-theme-green"></i> 30-Day Money Back Guarantee
+            </span>
+          </div>
+
+          <!-- How it works box (For Buy for Myself) -->
+          <div *ngIf="purchaseType === 'self'"
+            class="mt-4 p-3 rounded-3 bg-light-green border border-success border-opacity-25 d-flex align-items-start gap-3">
+            <div class="text-theme-green fs-4 mt-1">
+              <i class="fa-solid fa-gift"></i>
+            </div>
+            <div>
+              <div class="fw-bold text-theme-green extra-small">How it works?</div>
+              <div class="text-muted extra-small">
+                We'll generate unique membership codes and send them to your email. You can redeem them anytime or share
+                them with your loved ones.
+              </div>
+            </div>
+          </div>
+
+        </form>
       </div>
     </div>
   </div>

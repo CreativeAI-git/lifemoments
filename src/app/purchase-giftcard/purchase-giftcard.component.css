@@ -1,3 +1,7 @@
+* {
+  font-family: "Open Sans", sans-serif;
+}
+
 .ct_privacy_logo img {
   max-width: 280px;
   margin-inline: auto;
@@ -17,7 +21,7 @@
 .purchase-card {
   background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 96, 255, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
   overflow: hidden;
 }
 
@@ -30,7 +34,7 @@
 .section-title {
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
-  color: #00aa3a;
+  color: #31C82D;
   font-size: 1.1rem;
 }
 
@@ -52,8 +56,8 @@
 }
 
 .ct_input:focus {
-  border-color: #00aa3a;
-  box-shadow: 0 0 0 0.2rem rgba(0, 170, 58, 0.15);
+  border-color: #31C82D;
+  box-shadow: 0 0 0 0.2rem rgba(49, 200, 45, 0.15);
   outline: none;
 }
 
@@ -76,8 +80,8 @@
 }
 
 .ct_textarea:focus {
-  border-color: #00aa3a;
-  box-shadow: 0 0 0 0.2rem rgba(0, 170, 58, 0.15);
+  border-color: #31C82D;
+  box-shadow: 0 0 0 0.2rem rgba(49, 200, 45, 0.15);
   outline: none;
 }
 
@@ -101,13 +105,13 @@
 
 .payment-check:hover {
   background-color: #f8f9fa;
-  border-color: #00aa3a !important;
+  border-color: #31C82D !important;
 }
 
 .payment-selected {
-  background-color: rgba(0, 170, 58, 0.04) !important;
-  border-color: #00aa3a !important;
-  box-shadow: 0 0 0 0.2rem rgba(0, 170, 58, 0.1);
+  background-color: rgba(49, 200, 45, 0.04) !important;
+  border-color: #31C82D !important;
+  box-shadow: 0 0 0 0.2rem rgba(49, 200, 45, 0.1);
 }
 
 .payment-check input[type="radio"] {
@@ -119,27 +123,27 @@
 }
 
 .payment-check input[type="radio"]:checked {
-  background-color: #00aa3a;
-  border-color: #00aa3a;
+  background-color: #31C82D;
+  border-color: #31C82D;
 }
 
 .ct_blue_btn_fill {
-  background-color: #00aa3a;
+  background-color: #31C82D;
   color: #fff;
   border-radius: 8px;
   padding: 12px;
   width: 100%;
-  border: 1px solid #00aa3a;
+  border: 1px solid #31C82D;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
-  box-shadow: 0 4px 12px rgba(0, 170, 58, 0.2);
+  box-shadow: 0 4px 12px rgba(49, 200, 45, 0.2);
 }
 
 .ct_blue_btn_fill:hover:not(:disabled) {
   background-color: #fff;
-  color: #00aa3a;
-  box-shadow: 0 4px 12px rgba(0, 170, 58, 0.1);
+  color: #31C82D;
+  box-shadow: 0 4px 12px rgba(49, 200, 45, 0.1);
 }
 
 .ct_blue_btn_fill:disabled {
@@ -148,29 +152,95 @@
   box-shadow: none;
 }
 
+.btn-theme-green {
+  background-color: #31C82D !important;
+  border-color: #31C82D !important;
+  color: #ffffff !important;
+}
+
+.btn-theme-green:hover {
+  background-color: #2ab526 !important;
+  border-color: #2ab526 !important;
+}
+
+.text-theme-green {
+  color: #31C82D !important;
+}
+
+.bg-theme-green {
+  background-color: #31C82D !important;
+}
+
+.bg-light-success {
+  background-color: rgba(49, 200, 45, 0.1) !important;
+}
+
+.bg-light-green {
+  background-color: rgba(49, 200, 45, 0.08) !important;
+}
+
+.bg-light-gray {
+  background-color: #f8f9fa;
+}
+
+.type-icon-wrapper {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+}
+
+.purchase-type-card {
+  border: 1.5px solid #e0e0e0 !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.purchase-type-card:hover {
+  border-color: #31C82D !important;
+}
+
+.purchase-type-card.active {
+  border-color: #31C82D !important;
+  background-color: rgba(49, 200, 45, 0.04) !important;
+  box-shadow: 0 4px 12px rgba(49, 200, 45, 0.12) !important;
+}
+
+.step-badge {
+  width: 22px;
+  height: 22px;
+  font-size: 0.75rem;
+  background-color: #31C82D !important;
+}
+
+.recipient-num-badge {
+  width: 20px;
+  height: 20px;
+  font-size: 0.7rem;
+  background-color: #31C82D !important;
+}
+
+.quantity-control-group {
+  max-width: 100%;
+}
+
+.delivery-option-card, .payment-card {
+  border: 1.5px solid #e0e0e0 !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.delivery-option-card:hover, .payment-card:hover {
+  border-color: #31C82D !important;
+}
+
+.delivery-option-card.selected, .payment-card.selected {
+  border-color: #31C82D !important;
+  background-color: rgba(49, 200, 45, 0.04) !important;
+}
+
+.form-check-input:checked {
+  background-color: #31C82D !important;
+  border-color: #31C82D !important;
+}
+
 .cursor-pointer {
   cursor: pointer;
-}
-
-.invalid-feedback {
-  font-size: 0.8rem;
-  font-family: "Open Sans", sans-serif;
-  margin-top: 0.25rem;
-}
-
-.ct_custom_check2 .form-check-input {
-  width: 18px;
-  height: 18px;
-  border: 1px solid #e6e6e6;
-}
-
-.ct_custom_check2 .form-check-input:checked {
-  background-color: #00aa3a;
-  border-color: #00aa3a;
-}
-
-.ct_custom_check2 .form-check-input:focus {
-  box-shadow: unset;
-  border-color: #00aa3a;
-  vertical-align: middle;
 }
