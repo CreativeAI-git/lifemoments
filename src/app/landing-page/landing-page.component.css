@@ -201,3 +201,17 @@ input[type=button].zpbutton-type-primary {
 
     }
 }
+
+.ct_green_btn{
+        background-color: #31C82D;
+    padding: 14px 18px;
+    border-radius: 6px;
+    color: #fff;
+    outline: none;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 500;
+    width: 190px;
+    text-align: center;
+    justify-content: center;
+}
