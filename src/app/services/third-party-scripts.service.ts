@@ -44,7 +44,6 @@ export class ThirdPartyScriptsService {
     };
 
     if (typeof window === 'undefined') {
-      loadScripts();
       return;
     }
 
@@ -75,6 +74,7 @@ export class ThirdPartyScriptsService {
 
   trackPageView(pagePath: string): void {
     this.initializeAnalyticsStub();
+    this.ensureAnalyticsLoaded();
     this.sendAnalyticsConfig();
 
     window.gtag?.('event', 'page_view', {
@@ -84,6 +84,7 @@ export class ThirdPartyScriptsService {
 
   trackEvent(eventName: string, params?: Record<string, unknown>): void {
     this.initializeAnalyticsStub();
+    this.ensureAnalyticsLoaded();
     this.sendAnalyticsConfig();
 
     window.gtag?.('event', eventName, params);
@@ -201,7 +202,7 @@ export class ThirdPartyScriptsService {
   }
 
   private appendScript(src: string, id: string): void {
-    if (document.getElementById(id)) {
+    if (typeof document === 'undefined' || document.getElementById(id)) {
       return;
     }
 
@@ -210,6 +211,6 @@ export class ThirdPartyScriptsService {
     script.src = src;
     script.async = true;
     script.defer = true;
-    document.body.appendChild(script);
+    (document.head || document.body).appendChild(script);
   }
 }
