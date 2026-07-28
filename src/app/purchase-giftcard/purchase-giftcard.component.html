@@ -80,7 +80,7 @@
 
   <!-- Main Form Card -->
   <div class="row justify-content-center">
-    <div class="col-md-10 col-lg-8">
+    <div class="col-xl-10 col-lg-12 col-xxl-8">
       <div class="ct_purchase_card_bg">
         <form [formGroup]="purchaseForm" (ngSubmit)="onSubmit()" novalidate>
 
@@ -178,37 +178,44 @@
             <div formArrayName="recipients" class="d-flex flex-column gap-3">
               <div *ngFor="let recipient of recipients.controls; let i = index" [formGroupName]="i"
                 class="p-3 border rounded-3 bg-light-gray position-relative">
-                <div class="d-flex align-items-center gap-4 " style="overflow-x: auto;">
-                  <div class="">
-                    <span
-                      class="recipient-num-badge rounded-circle text-white extra-small fw-bold d-flex align-items-center justify-content-center">
-                      {{ i + 1 }}
-                    </span>
-                  </div>
-                  <div class="">
-                    <label class="form-label extra-small text-muted mb-1 text-nowrap">Recipient Name *</label>
-                    <input type="text" formControlName="receiver_name" placeholder="Enter full name"
-                      class="ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched"
-                      [class.is-invalid]="isRecipientFieldInvalid(i, 'receiver_name')" />
-                  </div>
-                  <div class="">
-                    <label class="form-label extra-small text-muted mb-1 text-nowrap">Recipient Email *</label>
-                    <input type="email" formControlName="receiver_email" placeholder="Enter email address"
-                      class="ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched"
-                      [class.is-invalid]="isRecipientFieldInvalid(i, 'receiver_email')" />
-                  </div>
-                  <div class="">
-                    <label class="form-label extra-small text-muted mb-1 text-nowrap">Personal Message
-                      (Optional)</label>
-                    <input type="text" formControlName="message" placeholder="Write a message..."
-                      class="ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched" />
-                  </div>
                   <div class=" d-flex align-items-end pt-4">
-                    <button *ngIf="recipients.length > 1" type="button" class="btn btn-sm text-danger border-0 p-1"
+                    <button *ngIf="recipients.length > 1" type="button" class="btn btn-sm ct_deleter_recipt text-danger border-0 p-1"
                       (click)="removeRecipient(i)" title="Remove recipient">
                       <i class="fa-solid fa-trash ct_font_icon_ff"></i>
                     </button>
                   </div>
+                <div class="row">
+                
+                  <div class="col-lg-4 col-md-4 mb-3 mb-md-0">
+                    <div class="d-flex align-items-end gap-3 ct_flex_col_767">
+                      <span
+                      class="recipient-num-badge rounded-circle mb-3 flex-shrink-0 text-white extra-small fw-bold d-flex align-items-center justify-content-center">
+                      {{ i + 1 }}
+                    </span>
+                    <div style="flex: 1; width: 100%;">
+                       <label class="form-label extra-small text-muted mb-1 text-nowrap" style="font-size: 14px;">Recipient Name *</label>
+                       <div >
+                         
+                    <input type="text" formControlName="receiver_name" placeholder="Enter full name"
+                      class="ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched"
+                      [class.is-invalid]="isRecipientFieldInvalid(i, 'receiver_name')" />
+                       </div>
+                    </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-md-4 mb-3 mb-md-0">
+                    <label class="form-label extra-small text-muted mb-1 text-nowrap"  style="font-size: 14px;">Recipient Email *</label>
+                    <input type="email" formControlName="receiver_email" placeholder="Enter email address"
+                      class="ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched"
+                      [class.is-invalid]="isRecipientFieldInvalid(i, 'receiver_email')" />
+                  </div>
+                  <div class="col-lg-4 col-md-4 mb-3 mb-md-0">
+                    <label class="form-label extra-small text-muted mb-1 text-nowrap"  style="font-size: 14px;">Personal Message
+                      (Optional)</label>
+                    <input type="text" formControlName="message" placeholder="Write a message..."
+                      class="ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched" />
+                  </div>
+                
                 </div>
               </div>
             </div>
