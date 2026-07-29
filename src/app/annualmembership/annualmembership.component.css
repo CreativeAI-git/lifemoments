@@ -126,11 +126,16 @@ input[type=button].zpbutton-type-primary {
     height: 54px;
     align-items: center;
 }
-
+.ct_obj_cover{
+    object-fit: cover;
+}
 @media screen and (max-width:991px) {
     .ct_desktop_top_hero_banner {
         display: none;
     }
+    .ct_obj_cover{
+    object-fit: contain;
+}
 
     .ct_light_green__box_h {
         height: auto;
