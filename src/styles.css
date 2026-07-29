@@ -4,6 +4,10 @@ g.link.male {
     stroke-dasharray: 7 !important;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 g.link.female {
     stroke-dasharray: 7 !important;
 }
@@ -176,4 +180,3 @@ g.node.selected {
     position: relative;
     filter: contrast(1.7);
 }
-

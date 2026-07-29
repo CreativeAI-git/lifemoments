@@ -19,6 +19,7 @@ input[type=button].zpbutton-type-primary {
     z-index: -1;
     object-fit: cover;
 }
+
 .ct_grid_3 {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -29,7 +30,7 @@ input[type=button].zpbutton-type-primary {
     text-align: center;
 }
 
-.ct_grid_3 i{
+.ct_grid_3 i {
     font-size: 15px;
 }
 
@@ -104,12 +105,14 @@ input[type=button].zpbutton-type-primary {
 .ct_br_mob_d_block {
     display: none;
 }
+
 .ct_grid_3_items {
     display: grid;
 }
-.ct_green_btn{
-        background-color: #31C82D;
-    padding: 14px 18px;
+
+.ct_green_btn {
+    background-color: #31C82D;
+    padding: 4px 18px;
     border-radius: 6px;
     color: #fff;
     outline: none;
@@ -117,9 +120,13 @@ input[type=button].zpbutton-type-primary {
     line-height: 1;
     font-weight: 500;
     width: 190px;
+    display: flex !important;
     text-align: center;
     justify-content: center;
+    height: 54px;
+    align-items: center;
 }
+
 @media screen and (max-width:991px) {
     .ct_desktop_top_hero_banner {
         display: none;
@@ -168,12 +175,14 @@ input[type=button].zpbutton-type-primary {
         align-items: self-start;
         /* padding-inline: 14px; */
     }
-    .ct_grid_3{
+
+    .ct_grid_3 {
         grid-template-columns: auto;
         gap: 20px;
         max-width: 100%;
     }
-    .ct_grid_3 br{
+
+    .ct_grid_3 br {
         display: none;
     }
 
