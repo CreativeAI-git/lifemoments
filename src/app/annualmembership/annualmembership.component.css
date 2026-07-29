@@ -135,7 +135,7 @@ input[type=button].zpbutton-type-primary {
     }
     .ct_obj_cover{
     object-fit: contain;
-}
+  }
 
     .ct_light_green__box_h {
         height: auto;
