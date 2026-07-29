@@ -9,6 +9,18 @@
   font-family: "Open Sans", sans-serif;
 }
 
+/* Hide Chrome, Safari, Edge, Opera number input spinner */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide Firefox number input spinner */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 .ct_privacy_logo img {
   max-width: 280px;
   margin-inline: auto;

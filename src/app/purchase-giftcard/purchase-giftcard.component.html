@@ -111,23 +111,12 @@
             <div class="input-group quantity-control-group border rounded-3 overflow-hidden">
               <button class="btn btn-light border-0 px-3 fw-bold fs-5 text-secondary" type="button"
                 (click)="decrementQuantity()">-</button>
-              <input type="number" formControlName="quantity" [readOnly]=""
+              <input type="number" formControlName="quantity"
                 class="form-control border-0 text-center fw-bold fs-5 shadow-none bg-white"
-                (input)="onQuantityChange($event)" min="1" readonly />
+                (input)="onQuantityChange($event)" min="1" />
               <button class="btn btn-light border-0 px-3 fw-bold fs-5 text-secondary" type="button"
                 (click)="incrementQuantity()">+</button>
             </div>
-            <!-- <div
-              class="mt-2 text-muted extra-small p-2 bg-light-green border border-success border-opacity-25 rounded-3 d-flex align-items-center gap-2 text-theme-green">
-              <i class="fa-solid ct_font_icon_ff"
-                [ngClass]="purchaseType === 'self' ? 'fa-circle-info' : 'fa-gift'"></i>
-              <span>
-                {{ purchaseType === 'self'
-                ? 'You will receive ' + (purchaseForm.get('quantity')?.value || 1) +
-                ' unique membership code(s) on your email after payment.'
-                : 'Please add details for each recipient. Each person will receive a unique membership code.' }}
-              </span>
-            </div> -->
           </div>
 
           <!-- STEP 3: Sender Information -->
@@ -217,12 +206,47 @@
                   </div>
                 
                 </div>
+
+                <!-- Per-recipient scheduling when 2 or more recipients -->
+                <div *ngIf="recipients.length >= 2" class="mt-3 pt-3 border-top">
+                  <label class="form-label extra-small text-muted mb-2 fw-semibold" style="font-size: 14px;">
+                    <i class="fa-solid fa-clock text-theme-green me-1"></i> Send Option for Recipient {{ i + 1 }}
+                  </label>
+                  <div class="row g-2">
+                    <div class="col-sm-6">
+                      <div class="p-2 border rounded-3 bg-white cursor-pointer d-flex align-items-center gap-2"
+                        [class.border-success]="recipient.get('delivery_type')?.value === 'immediate'"
+                        (click)="recipient.get('delivery_type')?.setValue('immediate')">
+                        <input type="radio" formControlName="delivery_type" value="immediate" class="form-check-input mt-0" />
+                        <span class="extra-small fw-semibold text-dark">Send Immediately</span>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="p-2 border rounded-3 bg-white cursor-pointer d-flex align-items-center gap-2"
+                        [class.border-success]="recipient.get('delivery_type')?.value === 'scheduled'"
+                        (click)="recipient.get('delivery_type')?.setValue('scheduled')">
+                        <input type="radio" formControlName="delivery_type" value="scheduled" class="form-check-input mt-0" />
+                        <span class="extra-small fw-semibold text-dark">Schedule for Later</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="recipient.get('delivery_type')?.value === 'scheduled'" class="mt-2">
+                    <label class="form-label extra-small text-muted mb-1" style="font-size: 13px;">Scheduled Date & Time *</label>
+                    <input type="datetime-local" formControlName="scheduled_at" [min]="minDate"
+                      class="ct_input fw-semibold text-dark rounded-3"
+                      [class.is-invalid]="isRecipientFieldInvalid(i, 'scheduled_at')" />
+                    <div *ngIf="isRecipientFieldInvalid(i, 'scheduled_at')" class="invalid-feedback extra-small d-block">
+                      Please select a valid future date.
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
 
-          <!-- STEP (Delivery Type) -->
-          <div class="form-step-group mb-4">
+          <!-- STEP (Delivery Type: Only when Buy for Myself OR exactly 1 recipient) -->
+          <div *ngIf="purchaseType === 'self' || recipients.length === 1" class="form-step-group mb-4">
             <div class="d-flex align-items-center gap-2 mb-3">
               <span
                 class="step-badge rounded-circle text-white fw-bold d-flex align-items-center justify-content-center">
@@ -281,7 +305,7 @@
             <div class="d-flex align-items-center gap-2 mb-3">
               <span
                 class="step-badge rounded-circle text-white fw-bold d-flex align-items-center justify-content-center">
-                {{ purchaseType === 'gift' ? '6' : '5' }}
+                {{ purchaseType === 'self' ? '5' : (recipients.length >= 2 ? '5' : '6') }}
               </span>
               <span class="fw-bold text-dark">Payment Method</span>
             </div>

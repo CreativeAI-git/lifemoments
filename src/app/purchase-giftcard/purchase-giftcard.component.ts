@@ -20,6 +20,22 @@ function futureDateValidator(): ValidatorFn {
   };
 }
 
+interface ModeState {
+  quantity: number;
+  sender_name: string;
+  sender_email: string;
+  payment_method: string;
+  delivery_type: string;
+  scheduled_at: string;
+  recipients?: Array<{
+    receiver_name: string;
+    receiver_email: string;
+    message: string;
+    delivery_type?: string;
+    scheduled_at?: string;
+  }>;
+}
+
 @Component({
   selector: 'app-purchase-giftcard',
   standalone: true,
@@ -34,6 +50,26 @@ export class PurchaseGiftcardComponent implements OnInit {
   minDate: string = '';
   purchaseType: 'self' | 'gift' = 'gift';
 
+  // Independent state persistence for both modes
+  private selfState: ModeState = {
+    quantity: 1,
+    sender_name: '',
+    sender_email: '',
+    payment_method: 'paypal',
+    delivery_type: 'immediate',
+    scheduled_at: ''
+  };
+
+  private giftState: ModeState = {
+    quantity: 1,
+    sender_name: '',
+    sender_email: '',
+    payment_method: 'paypal',
+    delivery_type: 'immediate',
+    scheduled_at: '',
+    recipients: []
+  };
+
   constructor(
     private fb: FormBuilder,
     private giftcardService: GiftcardService,
@@ -44,17 +80,18 @@ export class PurchaseGiftcardComponent implements OnInit {
     const now = new Date();
     this.minDate = now.toISOString().split('T')[0];
 
-    // Check query params for initial purchase type (self or gift)
+    let initialType: 'self' | 'gift' = 'gift';
+
+    // Check query params for initial purchase type
     this.route.queryParams.subscribe(params => {
       if (params['type'] === 'self') {
-        this.purchaseType = 'self';
+        initialType = 'self';
       } else if (params['type'] === 'gift') {
-        this.purchaseType = 'gift';
-      }
-      if (this.purchaseForm) {
-        this.updateFormForPurchaseType();
+        initialType = 'gift';
       }
     });
+
+    this.purchaseType = initialType;
 
     this.purchaseForm = this.fb.group({
       product_id: ['prod_premium_annual', Validators.required],
@@ -69,9 +106,9 @@ export class PurchaseGiftcardComponent implements OnInit {
       recipients: this.fb.array([])
     });
 
-    this.updateFormForPurchaseType();
+    this.restoreStateForType(this.purchaseType);
 
-    // Handle scheduled_at validation dynamically based on delivery_type
+    // Global scheduled_at validation dynamically based on delivery_type
     this.purchaseForm.get('delivery_type')?.valueChanges.subscribe(val => {
       const scheduledDateControl = this.purchaseForm.get('scheduled_at');
       if (val === 'scheduled') {
@@ -95,37 +132,143 @@ export class PurchaseGiftcardComponent implements OnInit {
     return this.purchaseForm.get('recipients') as FormArray;
   }
 
-  createRecipientGroup(): FormGroup {
-    return this.fb.group({
-      receiver_name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-      receiver_email: ['', [Validators.required, Validators.email]],
-      message: ['', [Validators.maxLength(500)]]
+  createRecipientGroup(data?: {
+    receiver_name?: string;
+    receiver_email?: string;
+    message?: string;
+    delivery_type?: string;
+    scheduled_at?: string;
+  }): FormGroup {
+    const group = this.fb.group({
+      receiver_name: [data?.receiver_name || '', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+      receiver_email: [data?.receiver_email || '', [Validators.required, Validators.email]],
+      message: [data?.message || '', [Validators.maxLength(500)]],
+      delivery_type: [data?.delivery_type || 'immediate', [Validators.required]],
+      scheduled_at: [data?.scheduled_at || '']
     });
+
+    group.get('delivery_type')?.valueChanges.subscribe(val => {
+      const scheduledDateControl = group.get('scheduled_at');
+      if (val === 'scheduled') {
+        scheduledDateControl?.setValidators([Validators.required, futureDateValidator()]);
+      } else {
+        scheduledDateControl?.clearValidators();
+        scheduledDateControl?.setValue('');
+      }
+      scheduledDateControl?.updateValueAndValidity();
+    });
+
+    if (data?.delivery_type === 'scheduled') {
+      group.get('scheduled_at')?.setValidators([Validators.required, futureDateValidator()]);
+    }
+
+    return group;
   }
 
   setPurchaseType(type: 'self' | 'gift'): void {
+    if (this.purchaseType === type) return;
+
+    // 1. Save current active tab state
+    this.saveCurrentState();
+
+    // 2. Switch type
     this.purchaseType = type;
-    this.purchaseForm.get('purchase_type')?.setValue(type);
-    this.updateFormForPurchaseType();
+    this.purchaseForm.get('purchase_type')?.setValue(type, { emitEvent: false });
+
+    // 3. Restore target tab state (restores independent quantity & form fields)
+    this.restoreStateForType(type);
+
+    // 4. Reset validation state so errors do not persist across tabs
+    this.resetFormValidation();
   }
 
-  updateFormForPurchaseType(): void {
+  private saveCurrentState(): void {
     if (!this.purchaseForm) return;
 
-    this.purchaseForm.get('purchase_type')?.setValue(this.purchaseType, { emitEvent: false });
-
+    const raw = this.purchaseForm.getRawValue();
     if (this.purchaseType === 'self') {
-      const currentQty = Math.max(1, this.purchaseForm.get('quantity')?.value || 1);
-      this.purchaseForm.get('quantity')?.setValue(currentQty, { emitEvent: false });
-      this.recipients.clear();
+      this.selfState = {
+        quantity: Math.max(1, Number(raw.quantity) || 1),
+        sender_name: raw.sender_name || '',
+        sender_email: raw.sender_email || '',
+        payment_method: raw.payment_method || 'paypal',
+        delivery_type: raw.delivery_type || 'immediate',
+        scheduled_at: raw.scheduled_at || ''
+      };
     } else {
-      const currentQty = Math.max(1, this.purchaseForm.get('quantity')?.value || 1);
-      this.syncRecipientsWithQuantity(currentQty);
+      this.giftState = {
+        quantity: Math.max(1, Number(raw.quantity) || 1),
+        sender_name: raw.sender_name || '',
+        sender_email: raw.sender_email || '',
+        payment_method: raw.payment_method || 'paypal',
+        delivery_type: raw.delivery_type || 'immediate',
+        scheduled_at: raw.scheduled_at || '',
+        recipients: (raw.recipients || []).map((r: any) => ({
+          receiver_name: r.receiver_name || '',
+          receiver_email: r.receiver_email || '',
+          message: r.message || '',
+          delivery_type: r.delivery_type || 'immediate',
+          scheduled_at: r.scheduled_at || ''
+        }))
+      };
     }
   }
 
+  private restoreStateForType(type: 'self' | 'gift'): void {
+    const targetState = type === 'self' ? this.selfState : this.giftState;
+
+    this.purchaseForm.patchValue({
+      purchase_type: type,
+      quantity: targetState.quantity,
+      sender_name: targetState.sender_name,
+      sender_email: targetState.sender_email,
+      payment_method: targetState.payment_method,
+      delivery_type: targetState.delivery_type,
+      scheduled_at: targetState.scheduled_at
+    }, { emitEvent: false });
+
+    this.recipients.clear();
+
+    if (type === 'gift') {
+      const savedRecipients = targetState.recipients || [];
+      const targetQty = Math.max(1, targetState.quantity);
+      for (let i = 0; i < targetQty; i++) {
+        const savedData = savedRecipients[i] || undefined;
+        this.recipients.push(this.createRecipientGroup(savedData));
+      }
+    }
+  }
+
+  private resetFormValidation(): void {
+    this.isSubmitted = false;
+
+    this.purchaseForm.markAsUntouched();
+    this.purchaseForm.markAsPristine();
+
+    Object.keys(this.purchaseForm.controls).forEach(key => {
+      const control = this.purchaseForm.get(key);
+      if (key !== 'recipients') {
+        control?.markAsUntouched();
+        control?.markAsPristine();
+        control?.setErrors(null);
+      }
+    });
+
+    this.recipients.controls.forEach(group => {
+      group.markAsUntouched();
+      group.markAsPristine();
+      if (group instanceof FormGroup) {
+        Object.keys(group.controls).forEach(key => {
+          const control = group.get(key);
+          control?.markAsUntouched();
+          control?.markAsPristine();
+          control?.setErrors(null);
+        });
+      }
+    });
+  }
+
   incrementQuantity(): void {
-    if (this.purchaseType == 'self') return;
     const currentVal = parseInt(this.purchaseForm.get('quantity')?.value || 1, 10);
     const newVal = currentVal + 1;
     this.purchaseForm.get('quantity')?.setValue(newVal);
@@ -135,7 +278,6 @@ export class PurchaseGiftcardComponent implements OnInit {
   }
 
   decrementQuantity(): void {
-    if (this.purchaseType == 'self') return;
     const currentVal = parseInt(this.purchaseForm.get('quantity')?.value || 1, 10);
     if (currentVal > 1) {
       const newVal = currentVal - 1;
@@ -182,7 +324,6 @@ export class PurchaseGiftcardComponent implements OnInit {
     }
   }
 
-  // Helper method for easy validation checking in HTML
   isFieldInvalid(fieldName: string): boolean {
     const control = this.purchaseForm.get(fieldName);
     return !!(control && control.invalid && (control.touched || this.isSubmitted));
@@ -196,6 +337,22 @@ export class PurchaseGiftcardComponent implements OnInit {
 
   onSubmit(): void {
     this.isSubmitted = true;
+
+    // Validate recipient scheduling when 2+ recipients
+    if (this.purchaseType === 'gift' && this.recipients.length >= 2) {
+      this.recipients.controls.forEach(group => {
+        const delType = group.get('delivery_type')?.value;
+        const schedAt = group.get('scheduled_at');
+        if (delType === 'scheduled') {
+          schedAt?.setValidators([Validators.required, futureDateValidator()]);
+          schedAt?.updateValueAndValidity();
+        } else {
+          schedAt?.clearValidators();
+          schedAt?.updateValueAndValidity();
+        }
+      });
+    }
+
     if (this.purchaseForm.invalid) {
       this.purchaseForm.markAllAsTouched();
       return;
@@ -215,14 +372,40 @@ export class PurchaseGiftcardComponent implements OnInit {
       delivery_type: rawValue.delivery_type
     };
 
-    if (rawValue.delivery_type === 'scheduled' && rawValue.scheduled_at) {
-      // Format as ISO string e.g., 2026-07-30T10:00:00Z
-      const dateObj = new Date(rawValue.scheduled_at);
-      payload.scheduled_at = dateObj.toISOString();
-    }
-
     if (rawValue.purchase_type === 'gift') {
-      payload.recipients = rawValue.recipients;
+      if (rawValue.recipients && rawValue.recipients.length >= 2) {
+        // Multi-recipient scheduling: include delivery_type and scheduled_at for each recipient
+        payload.recipients = rawValue.recipients.map((rec: any) => {
+          const recObj: any = {
+            receiver_name: rec.receiver_name,
+            receiver_email: rec.receiver_email,
+            message: rec.message || '',
+            delivery_type: rec.delivery_type || 'immediate'
+          };
+          if (rec.delivery_type === 'scheduled' && rec.scheduled_at) {
+            const dateObj = new Date(rec.scheduled_at);
+            recObj.scheduled_at = dateObj.toISOString();
+          }
+          return recObj;
+        });
+        payload.delivery_type = 'immediate';
+      } else {
+        // Single recipient
+        if (rawValue.delivery_type === 'scheduled' && rawValue.scheduled_at) {
+          const dateObj = new Date(rawValue.scheduled_at);
+          payload.scheduled_at = dateObj.toISOString();
+        }
+        payload.recipients = rawValue.recipients.map((rec: any) => ({
+          receiver_name: rec.receiver_name,
+          receiver_email: rec.receiver_email,
+          message: rec.message || ''
+        }));
+      }
+    } else {
+      if (rawValue.delivery_type === 'scheduled' && rawValue.scheduled_at) {
+        const dateObj = new Date(rawValue.scheduled_at);
+        payload.scheduled_at = dateObj.toISOString();
+      }
     }
 
     this.giftcardService.purchaseGiftcard(payload).subscribe({
