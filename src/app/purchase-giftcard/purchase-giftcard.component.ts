@@ -379,19 +379,17 @@ export class PurchaseGiftcardComponent implements OnInit {
             receiver_email: rec.receiver_email,
             message: rec.message || ''
           };
-          
+
           if (rawValue.recipients.length >= 2) {
             recObj.delivery_type = rec.delivery_type || 'immediate';
             if (rec.delivery_type === 'scheduled' && rec.scheduled_at) {
-              const dateObj = new Date(rec.scheduled_at);
-              recObj.scheduled_at = dateObj.toISOString();
+              recObj.scheduled_at = rec.scheduled_at;
             }
           } else {
             // For single recipient, the delivery options are tracked at the form level
             recObj.delivery_type = rawValue.delivery_type || 'immediate';
             if (rawValue.delivery_type === 'scheduled' && rawValue.scheduled_at) {
-              const dateObj = new Date(rawValue.scheduled_at);
-              recObj.scheduled_at = dateObj.toISOString();
+              recObj.scheduled_at = rawValue.scheduled_at;
             }
           }
           return recObj;
@@ -400,8 +398,7 @@ export class PurchaseGiftcardComponent implements OnInit {
     } else {
       payload.delivery_type = rawValue.delivery_type || 'immediate';
       if (rawValue.delivery_type === 'scheduled' && rawValue.scheduled_at) {
-        const dateObj = new Date(rawValue.scheduled_at);
-        payload.scheduled_at = dateObj.toISOString();
+        payload.scheduled_at = rawValue.scheduled_at;
       }
     }
 
