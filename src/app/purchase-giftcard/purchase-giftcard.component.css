@@ -24,7 +24,7 @@ input[type="number"] {
 }
 
 .ct_privacy_logo img {
-  max-width: 280px;
+  max-width: 200px;
   margin-inline: auto;
   display: block;
 }
@@ -37,7 +37,7 @@ input[type="number"] {
   top: 0px;
   z-index: 1000;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .ct_font_icon_ff {
@@ -48,18 +48,20 @@ input[type="number"] {
   background: #ffffff;
   border-radius: 16px;
   -webkit-box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
   overflow: hidden;
 }
+
 .ct_deleter_recipt {
-    position: absolute;
-    right: 10px;
-    top: 10px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }
+
 .ct_purchase_card_bg {
   background-color: #fff;
   -webkit-box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.09);
-          box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.09);
+  box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.09);
   padding: 30px;
   border-radius: 10px;
 }
@@ -100,7 +102,7 @@ input[type="number"] {
 .ct_input:focus {
   border-color: #31C82D;
   -webkit-box-shadow: 0 0 0 0.2rem rgba(49, 200, 45, 0.15);
-          box-shadow: 0 0 0 0.2rem rgba(49, 200, 45, 0.15);
+  box-shadow: 0 0 0 0.2rem rgba(49, 200, 45, 0.15);
   outline: none;
 }
 
@@ -110,7 +112,7 @@ input[type="number"] {
 
 .ct_input.is-invalid:focus {
   -webkit-box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.15);
-          box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.15);
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.15);
 }
 
 .ct_textarea {
@@ -129,7 +131,7 @@ input[type="number"] {
 .ct_textarea:focus {
   border-color: #31C82D;
   -webkit-box-shadow: 0 0 0 0.2rem rgba(49, 200, 45, 0.15);
-          box-shadow: 0 0 0 0.2rem rgba(49, 200, 45, 0.15);
+  box-shadow: 0 0 0 0.2rem rgba(49, 200, 45, 0.15);
   outline: none;
 }
 
@@ -142,7 +144,7 @@ input[type="number"] {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 .payment-check {
@@ -154,8 +156,8 @@ input[type="number"] {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   border: 1px solid #dee2e6 !important;
 }
 
@@ -168,7 +170,7 @@ input[type="number"] {
   background-color: rgba(49, 200, 45, 0.04) !important;
   border-color: #31C82D !important;
   -webkit-box-shadow: 0 0 0 0.2rem rgba(49, 200, 45, 0.1);
-          box-shadow: 0 0 0 0.2rem rgba(49, 200, 45, 0.1);
+  box-shadow: 0 0 0 0.2rem rgba(49, 200, 45, 0.1);
 }
 
 .payment-check input[type="radio"] {
@@ -196,21 +198,21 @@ input[type="number"] {
   -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   -webkit-box-shadow: 0 4px 12px rgba(49, 200, 45, 0.2);
-          box-shadow: 0 4px 12px rgba(49, 200, 45, 0.2);
+  box-shadow: 0 4px 12px rgba(49, 200, 45, 0.2);
 }
 
 .ct_blue_btn_fill:hover:not(:disabled) {
   background-color: #fff;
   color: #31C82D;
   -webkit-box-shadow: 0 4px 12px rgba(49, 200, 45, 0.1);
-          box-shadow: 0 4px 12px rgba(49, 200, 45, 0.1);
+  box-shadow: 0 4px 12px rgba(49, 200, 45, 0.1);
 }
 
 .ct_blue_btn_fill:disabled {
   opacity: 0.65;
   cursor: not-allowed;
   -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .btn-theme-green {
@@ -264,7 +266,7 @@ input[type="number"] {
   border-color: #31C82D !important;
   background-color: rgba(49, 200, 45, 0.04) !important;
   -webkit-box-shadow: 0 4px 12px rgba(49, 200, 45, 0.12) !important;
-          box-shadow: 0 4px 12px rgba(49, 200, 45, 0.12) !important;
+  box-shadow: 0 4px 12px rgba(49, 200, 45, 0.12) !important;
 }
 
 .step-badge {
@@ -324,16 +326,19 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
-@media screen and (max-width:767px){
-  .ct_flex_col_767{
+
+@media screen and (max-width:767px) {
+  .ct_flex_col_767 {
     flex-direction: column;
     align-items: start !important;
   }
-  .ct_flex_col_767 .recipient-num-badge{
+
+  .ct_flex_col_767 .recipient-num-badge {
     margin-bottom: 0px !important;
 
   }
-  .ct_purchase_card_bg{
+
+  .ct_purchase_card_bg {
     padding-inline: 15px;
   }
 }
