@@ -368,40 +368,37 @@ export class PurchaseGiftcardComponent implements OnInit {
       quantity: Number(rawValue.quantity),
       sender_name: rawValue.sender_name,
       sender_email: rawValue.sender_email,
-      payment_method: rawValue.payment_method,
-      delivery_type: rawValue.delivery_type
+      payment_method: rawValue.payment_method
     };
 
     if (rawValue.purchase_type === 'gift') {
-      if (rawValue.recipients && rawValue.recipients.length >= 2) {
-        // Multi-recipient scheduling: include delivery_type and scheduled_at for each recipient
+      if (rawValue.recipients && rawValue.recipients.length > 0) {
         payload.recipients = rawValue.recipients.map((rec: any) => {
           const recObj: any = {
             receiver_name: rec.receiver_name,
             receiver_email: rec.receiver_email,
-            message: rec.message || '',
-            delivery_type: rec.delivery_type || 'immediate'
+            message: rec.message || ''
           };
-          if (rec.delivery_type === 'scheduled' && rec.scheduled_at) {
-            const dateObj = new Date(rec.scheduled_at);
-            recObj.scheduled_at = dateObj.toISOString();
+          
+          if (rawValue.recipients.length >= 2) {
+            recObj.delivery_type = rec.delivery_type || 'immediate';
+            if (rec.delivery_type === 'scheduled' && rec.scheduled_at) {
+              const dateObj = new Date(rec.scheduled_at);
+              recObj.scheduled_at = dateObj.toISOString();
+            }
+          } else {
+            // For single recipient, the delivery options are tracked at the form level
+            recObj.delivery_type = rawValue.delivery_type || 'immediate';
+            if (rawValue.delivery_type === 'scheduled' && rawValue.scheduled_at) {
+              const dateObj = new Date(rawValue.scheduled_at);
+              recObj.scheduled_at = dateObj.toISOString();
+            }
           }
           return recObj;
         });
-        payload.delivery_type = 'immediate';
-      } else {
-        // Single recipient
-        if (rawValue.delivery_type === 'scheduled' && rawValue.scheduled_at) {
-          const dateObj = new Date(rawValue.scheduled_at);
-          payload.scheduled_at = dateObj.toISOString();
-        }
-        payload.recipients = rawValue.recipients.map((rec: any) => ({
-          receiver_name: rec.receiver_name,
-          receiver_email: rec.receiver_email,
-          message: rec.message || ''
-        }));
       }
     } else {
+      payload.delivery_type = rawValue.delivery_type || 'immediate';
       if (rawValue.delivery_type === 'scheduled' && rawValue.scheduled_at) {
         const dateObj = new Date(rawValue.scheduled_at);
         payload.scheduled_at = dateObj.toISOString();
