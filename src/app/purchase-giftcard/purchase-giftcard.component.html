@@ -210,10 +210,10 @@
                 <!-- Per-recipient scheduling when 2 or more recipients -->
                 <div *ngIf="recipients.length >= 2" class="mt-3 pt-3 border-top">
                   <label class="form-label extra-small text-muted mb-2 fw-semibold" style="font-size: 14px;">
-                    <i class="fa-solid fa-clock text-theme-green me-1"></i> Send Option for Recipient {{ i + 1 }}
+                    <i class="fa-solid fa-clock text-theme-green me-1 ct_font_icon_ff"></i> Send Option for Recipient {{ i + 1 }}
                   </label>
-                  <div class="row g-2">
-                    <div class="col-sm-6">
+                  <div class="row ">
+                    <div class="col-md-6 mb-3 mb-md-0">
                       <div class="p-2 border rounded-3 bg-white cursor-pointer d-flex align-items-center gap-2"
                         [class.border-success]="recipient.get('delivery_type')?.value === 'immediate'"
                         (click)="recipient.get('delivery_type')?.setValue('immediate')">
@@ -221,7 +221,7 @@
                         <span class="extra-small fw-semibold text-dark">Send Immediately</span>
                       </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-md-6 mb-3 mb-md-0">
                       <div class="p-2 border rounded-3 bg-white cursor-pointer d-flex align-items-center gap-2"
                         [class.border-success]="recipient.get('delivery_type')?.value === 'scheduled'"
                         (click)="recipient.get('delivery_type')?.setValue('scheduled')">
