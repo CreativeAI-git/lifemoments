@@ -127,7 +127,27 @@ input[type=button].zpbutton-type-primary {
     align-items: center;
 }
 .ct_obj_cover{
-    object-fit: cover;
+    object-fit: contain;
+}
+.ct_desktop_dandline_top_0:before{
+    top: 20%;
+}
+.ct_list_bullet_img li{
+    position: relative;
+    padding-left: 24px;
+}
+.ct_list_bullet_img li:before{
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-image: url(../../assets/files/bullet_circle_icon.png);
+    width: 15px;
+    height: 15px;
+    left: 0px;
+    border-radius: 100%;
+    background-size: contain;
+    background-position: center;
 }
 @media screen and (max-width:991px) {
     .ct_desktop_top_hero_banner {
@@ -135,7 +155,6 @@ input[type=button].zpbutton-type-primary {
     }
     .ct_obj_cover{
     object-fit: contain;
-    height: auto !important;
   }
 
     .ct_light_green__box_h {
