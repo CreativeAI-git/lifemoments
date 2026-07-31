@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -9,5 +10,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./termsofuse.component.css']
 })
 export class TermsofuseComponent {
+  constructor(public location: Location) {
 
+  }
 }
