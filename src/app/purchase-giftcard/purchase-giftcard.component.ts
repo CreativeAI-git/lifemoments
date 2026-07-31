@@ -412,6 +412,7 @@ export class PurchaseGiftcardComponent implements OnInit {
           this.giftcardService.payment(PayLoad).subscribe({
             next: (res) => {
               if (res.success && res.data?.checkout_url) {
+                this.isSubmitting = false;
                 window.location.href = res.data.checkout_url;
               } else {
                 this.isSubmitting = false;
