@@ -118,19 +118,24 @@ input[type=button].zpbutton-type-primary {
 
 .ct_green_btn {
     background-color: #31C82D;
-    padding: 4px 18px;
+    padding: 4px 0px;
     border-radius: 6px;
     color: #fff;
     outline: none;
     font-size: 14px;
     line-height: 1;
     font-weight: 500;
-    width: 216px;
+    width: 240px;
     display: flex !important;
     text-align: center;
     height: 40px;
     align-items: center;
-    gap: 5px;
+    position: relative;
+
+}
+.ct_green_btn img{
+    position: absolute;
+    left: 0px;
 }
 .ct_obj_cover{
     object-fit: contain;
