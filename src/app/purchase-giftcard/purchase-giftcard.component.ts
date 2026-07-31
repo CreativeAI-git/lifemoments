@@ -105,7 +105,6 @@ export class PurchaseGiftcardComponent implements OnInit {
       delivery_type: ['immediate', Validators.required],
       scheduled_at: [''],
       recipients: this.fb.array([]),
-      agreedToTerms: [false, Validators.requiredTrue]
     });
 
     this.restoreStateForType(this.purchaseType);
