@@ -1,11 +1,11 @@
-<app-cookie-consent></app-cookie-consent>
+<app-c>ookie-consent></app-c>
 <div class="theme-content-area">
   <div class="theme-content-container">
     <div class="theme-content-area-inner">
       <div class="zpcontent-container page-container">
         <div data-element-id="elm_qmSsBAL0X54o-pa0SM_jXg" data-element-type="section"
           class="zpsection zpdark-section ct_desktop_top_hero_banner zpdark-section-bg zscustomsection-166 zpbackground-size-cover zpbackground-position-center-center zpbackground-repeat-repeat zpbackground-attachment-scroll center pt-0">
-          <img src="../../assets/files/banner_bg_new.png" style="height: 100vh; width: 100%; object-fit: cover"
+          <img src="assets/files/banner_bg_new.png" style="height: 100vh; width: 100%; object-fit: cover"
             fetchpriority="high" />
         </div>
 
@@ -166,8 +166,8 @@
                 </div>
               </div>
               <div class="mb-3 mt-2">
-                <button class="ct_green_btn"  routerLink="/purchase-giftcard"   style="padding-left: 0px;"> <img src="../../assets/favIcon.jpg" alt="" width="40px" height="40px" style="border-radius: 5px;mix-blend-mode: lighten;"><span class="mx-auto">Buy for Myself</span></button>
-                <button class="ct_green_btn mt-3"  routerLink="/purchase-giftcard" style="padding-left: 0px;"><img src="../../assets/favIcon.jpg" alt="" width="40px" height="40px" style="border-radius: 5px;mix-blend-mode: lighten;">Gift to Someone Special</button>
+                <button class="ct_green_btn"  routerLink="/purchase-giftcard" [queryParams]="{ type: 'self' }"  style="padding-left: 0px;"> <img src="assets/favIcon.jpg" alt="" width="40px" height="40px" style="border-radius: 5px;mix-blend-mode: lighten;"><span class="mx-auto">Buy for Myself</span></button>
+                <button class="ct_green_btn mt-3"  routerLink="/purchase-giftcard" [queryParams]="{ type: 'gift' }" style="padding-left: 0px;"><img src="assets/favIcon.jpg" alt="" width="40px" height="40px" style="border-radius: 5px;mix-blend-mode: lighten;">Gift to Someone Special</button>
               </div>
               <ul class="list-unstyled mb-0">
                 <li>🔒 Secure online purchase</li>
@@ -177,7 +177,7 @@
             </div>
             <div
               class="zpelem-col zpcol-12 zpcol-md-4 mt-4 zpcol-sm-12 zpalign-self- zpdefault-section zpdefault-section-bg">
-              <img src="../../assets/files/membership_zigzag_2.jpg" alt="" height="400px"
+              <img src="assets/files/membership_zigzag_2.jpg" alt="" height="400px"
                 class="w-100 ct_obj_cover ct_ob_posion_center_res"  style="object-position: top right;"/>
             </div>
           </div>
@@ -187,7 +187,7 @@
             style="margin-top: 70px !important;padding: 40px; padding-bottom: 16px;  background-color: #f5f5f5; ">
             <div
               class="zpelem-col zpcol-12 zpcol-md-4 mb-4  zpcol-sm-12 zpalign-self- zpdefault-section zpdefault-section-bg">
-              <img src="../../assets/files/membership_zigzag_3.jpg" alt="" height="400px" class="w-100 ct_obj_cover"
+              <img src="assets/files/membership_zigzag_3.jpg" alt="" height="400px" class="w-100 ct_obj_cover"
                 style="object-position: top;" />
             </div>
             <div
@@ -269,7 +269,7 @@
             </div>
             <div
               class="zpelem-col zpcol-12 zpcol-md-4 zpcol-sm-12 mb-3 zpalign-self- zpdefault-section zpdefault-section-bg">
-              <img src="../../assets/files/membership_zigzag_1.jpg" alt="" height="400px"
+              <img src="assets/files/membership_zigzag_1.jpg" alt="" height="400px"
                 class="w-100 ct_obj_cover ct_ob_posion_center_res" style="object-position: right;"  />
             </div>
           </div>
@@ -1167,9 +1167,9 @@
                     your family's memories? </strong></span><br></h5>
               <div class="d-flex align-items-center justify-content-center gap-3 mt-4 flex-wrap">
                 <a routerLink="/purchase-giftcard" [queryParams]="{ type: 'self' }"
-                  class="ct_green_btn flex-shrink-0 text-decoration-none d-inline-block text-center"  style="padding-left: 0px;"><img src="../../assets/favIcon.jpg" alt="" width="40px" height="40px" style="border-radius: 5px;mix-blend-mode: lighten;"> <span class="mx-auto">Buy for Myself</span></a>
+                  class="ct_green_btn flex-shrink-0 text-decoration-none d-inline-block text-center"  style="padding-left: 0px;"><img src="assets/favIcon.jpg" alt="" width="40px" height="40px" style="border-radius: 5px;mix-blend-mode: lighten;"> <span class="mx-auto">Buy for Myself</span></a>
                 <a routerLink="/purchase-giftcard" [queryParams]="{ type: 'gift' }"
-                  class="ct_green_btn flex-shrink-0 text-decoration-none d-inline-block text-center"  style="padding-left: 0px;"><img src="../../assets/favIcon.jpg" alt="" width="40px" height="40px" style="border-radius: 5px;mix-blend-mode: lighten;"> Gift to Someone
+                  class="ct_green_btn flex-shrink-0 text-decoration-none d-inline-block text-center"  style="padding-left: 0px;"><img src="assets/favIcon.jpg" alt="" width="40px" height="40px" style="border-radius: 5px;mix-blend-mode: lighten;"> Gift to Someone
                   Special</a>
               </div>
 
