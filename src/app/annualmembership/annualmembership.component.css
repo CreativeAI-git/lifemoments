@@ -72,7 +72,9 @@ input[type=button].zpbutton-type-primary {
     background-size: contain;
     background-position: right;
 }
-
+/* .ct_desktop_dandline_top_0:after{
+    top: 40%;
+} */
 .ct_desktop_dandline_bottom:before {
     content: "";
     position: absolute;
@@ -83,6 +85,10 @@ input[type=button].zpbutton-type-primary {
     height: 452px;
     background-repeat: no-repeat;
     background-size: contain;
+    
+}
+.ct_desktop_dandline_top_03456:before ,.ct_desktop_dandline_top_03456556:before{
+   display: none;
 }
 
 .ct_desktop_dandline_bottom:after {
@@ -119,18 +125,39 @@ input[type=button].zpbutton-type-primary {
     font-size: 14px;
     line-height: 1;
     font-weight: 500;
-    width: 190px;
+    width: 216px;
     display: flex !important;
     text-align: center;
-    justify-content: center;
-    height: 54px;
+    height: 40px;
     align-items: center;
+    gap: 5px;
 }
 .ct_obj_cover{
     object-fit: contain;
 }
 .ct_desktop_dandline_top_0:before{
-    top: 20%;
+    top:49%;
+}
+.ct_desktop_dandline_top_0:after{
+    top: 10%;
+}
+.ct_desktop_dandline_top_40:after {
+    top: 79% !important;
+}
+.ct_desktop_dandline_top_035:before {
+    top: 94% !important;
+}
+.ct_desktop_dandline_top_3_top:before {
+    top: 28% !important;
+}
+.ct_desktop_dandline_top_3_top:after{
+    top: 5%;
+}
+.ct_desktop_dandline_bottom_3_bottom:before{
+    top: 84%;
+}
+.ct_desktop_dandline_bottom_3_bottom:after{
+    top: 58% !important;
 }
 .ct_list_bullet_img li{
     position: relative;
@@ -149,6 +176,8 @@ input[type=button].zpbutton-type-primary {
     background-size: contain;
     background-position: center;
 }
+
+
 @media screen and (max-width:991px) {
     .ct_desktop_top_hero_banner {
         display: none;
@@ -156,7 +185,9 @@ input[type=button].zpbutton-type-primary {
     .ct_obj_cover{
     object-fit: contain;
   }
-
+.ct_ob_posion_center_res{
+    object-position: center !important;
+}
     .ct_light_green__box_h {
         height: auto;
     }
@@ -172,7 +203,7 @@ input[type=button].zpbutton-type-primary {
 
     .ct_moble_top_hero_banner {
         display: block;
-        padding-top: 86px !important;
+        padding-top: 134px !important;
         height: 547px !important;
 
 
@@ -215,7 +246,7 @@ input[type=button].zpbutton-type-primary {
         /* aspect-ratio: 4/4.2; */
         height: 502px !important;
         width: 100%;
-        padding-top: 137px !important;
+        padding-top: 166px !important;
     }
 
     .ct_px_40_new {
@@ -236,7 +267,7 @@ input[type=button].zpbutton-type-primary {
         width: 200px !important;
         -o-object-fit: contain;
         object-fit: contain;
-        margin-top: 8px;
+        margin-top: 36px;
     }
 
     .ct_br_mob_d_block {
@@ -246,5 +277,8 @@ input[type=button].zpbutton-type-primary {
     [data-element-id="elm_DROCHGOD7XwBRYdLxhLDwg"].zpelem-video iframe.zpvideo#ct_video_iframe {
         height: 220px !important;
 
+    }
+    .ct_ready_head_text_fs_15_res strong{
+        font-size: 15px !important;
     }
 }
