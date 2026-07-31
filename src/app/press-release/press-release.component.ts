@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -9,5 +10,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./press-release.component.css']
 })
 export class PressReleaseComponent {
+  constructor(public location: Location) {
 
+  }
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-privacypolicy',
@@ -9,5 +10,7 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./privacypolicy.component.css']
 })
 export class PrivacypolicyComponent {
+  constructor(public location: Location) {
 
+  }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { GiftcardService } from '../services/giftcard.service';
@@ -73,7 +73,8 @@ export class PurchaseGiftcardComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private giftcardService: GiftcardService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public location: Location
   ) { }
 
   ngOnInit(): void {
