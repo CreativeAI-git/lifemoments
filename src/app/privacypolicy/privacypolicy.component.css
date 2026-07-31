@@ -30,6 +30,9 @@
  p {
    font-family: "Open Sans", sans-serif;
  }
+ .ct_back_icon{
+  cursor: pointer;
+ }
 
  .ct_fs_28 {
    font-size: 28px;
