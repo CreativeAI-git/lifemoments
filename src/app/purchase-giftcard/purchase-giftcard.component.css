@@ -313,6 +313,9 @@ input[type="number"] {
 .cursor-pointer {
   cursor: pointer;
 }
+.ct_mobile_center_mx_width {
+    max-width: 243px;
+}
 .ct_custom_check2  .form-check-input{
           width: 18px;
         height: 18px;
@@ -356,4 +359,13 @@ input[type=number] {
   .ct_purchase_card_bg {
     padding-inline: 15px;
   }
+}
+
+@media screen and (max-width:575px){
+  .ct_fs_13_on_res{
+    font-size: 13px !important;
+  }
+  .ct_mobile_center_mx_width {
+    max-width: 276px;
+}
 }

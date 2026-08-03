@@ -356,15 +356,14 @@
 
           <!-- Submit Button -->
           <div class="mt-4">
-            <div class="mb-3 d-flex align-items-center justify-content-start gap-2 text-muted extra-small form-check ct_custom_check2"
+            <div class="mb-3 d-flex align-items-center justify-content-center  gap-2 text-muted extra-small form-check ct_custom_check2"
               style="padding: 0 0px;">
-              <label class="form-check-label text-start cursor-pointer" for="termsCheck" style="line-height: 1.5;font-size: 14px;">
-                By purchasing, you agree to our
+              <label class="form-check-label text-center cursor-pointer ct_mobile_center_mx_width ct_fs_13_on_res" for="termsCheck" style="line-height: 1.5;font-size: 14px;">
+                By purchasing, you agree to our <br class="d-block d-sm-none">
                 <a routerLink="/termsofuse" class="text-theme-green text-decoration-none fw-semibold">Terms of Use</a>
                 and
                 <a routerLink="/privacypolicy" class="text-theme-green text-decoration-none fw-semibold">Privacy
-                  Policy</a>.
-                {{ purchaseType === 'gift' ? 'Gift card' : 'Annual Membership' }} purchases are non-refundable.
+                  Policy</a>.<span class="d-inline d-sm-none"> Annual <br class="d-block d-sm-none"> Membership  purchases are non-refundable.</span>
               </label>
             </div>
             <button type="submit"
