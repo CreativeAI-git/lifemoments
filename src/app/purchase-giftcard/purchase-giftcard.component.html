@@ -356,6 +356,16 @@
 
           <!-- Submit Button -->
           <div class="mt-4">
+            <div class="mb-4">
+              <label class="form-label extra-small fw-semibold text-dark mb-1">Discount Code (Optional)</label>
+              <input type="text" formControlName="discount_code" placeholder="Enter discount code"
+                class="ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched" />
+            </div>
+
+            <div *ngIf="apiErrorMessage" class="alert alert-danger mb-3 d-flex align-items-center gap-2 extra-small fw-semibold">
+              <i class="fa-solid fa-circle-exclamation ct_font_icon_ff"></i> {{ apiErrorMessage }}
+            </div>
+
             <div
               class="mb-3 d-flex align-items-center justify-content-center  gap-2 text-muted extra-small form-check ct_custom_check2"
               style="padding: 0 0px;">

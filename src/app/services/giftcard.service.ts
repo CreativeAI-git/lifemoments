@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class GiftcardService {
   private apiUrl = 'https://lifesmomentsapp.com:4000/';
-
+  // private apiUrl = 'http://192.168.1.120:4000/';
   constructor(private http: HttpClient) { }
 
   purchaseGiftcard(payload: any): Observable<any> {

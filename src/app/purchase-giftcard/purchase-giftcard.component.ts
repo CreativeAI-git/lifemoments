@@ -27,6 +27,7 @@ interface ModeState {
   payment_method: string;
   delivery_type: string;
   scheduled_at: string;
+  discount_code: string;
   recipients?: Array<{
     receiver_name: string;
     receiver_email: string;
@@ -47,6 +48,8 @@ export class PurchaseGiftcardComponent implements OnInit {
   purchaseForm!: FormGroup;
   isSubmitting = false;
   isSubmitted = false;
+  apiErrorMessage: string = '';
+  private errorTimeout: any;
   minDate: string = '';
   purchaseType: 'self' | 'gift' = 'gift';
 
@@ -57,7 +60,8 @@ export class PurchaseGiftcardComponent implements OnInit {
     sender_email: '',
     payment_method: 'paypal',
     delivery_type: 'immediate',
-    scheduled_at: ''
+    scheduled_at: '',
+    discount_code: ''
   };
 
   private giftState: ModeState = {
@@ -67,6 +71,7 @@ export class PurchaseGiftcardComponent implements OnInit {
     payment_method: 'paypal',
     delivery_type: 'immediate',
     scheduled_at: '',
+    discount_code: '',
     recipients: []
   };
 
@@ -104,6 +109,7 @@ export class PurchaseGiftcardComponent implements OnInit {
       payment_method: ['paypal', Validators.required],
       delivery_type: ['immediate', Validators.required],
       scheduled_at: [''],
+      discount_code: [''],
       recipients: this.fb.array([]),
     });
 
@@ -194,7 +200,8 @@ export class PurchaseGiftcardComponent implements OnInit {
         sender_email: raw.sender_email || '',
         payment_method: raw.payment_method || 'paypal',
         delivery_type: raw.delivery_type || 'immediate',
-        scheduled_at: raw.scheduled_at || ''
+        scheduled_at: raw.scheduled_at || '',
+        discount_code: raw.discount_code || ''
       };
     } else {
       this.giftState = {
@@ -204,6 +211,7 @@ export class PurchaseGiftcardComponent implements OnInit {
         payment_method: raw.payment_method || 'paypal',
         delivery_type: raw.delivery_type || 'immediate',
         scheduled_at: raw.scheduled_at || '',
+        discount_code: raw.discount_code || '',
         recipients: (raw.recipients || []).map((r: any) => ({
           receiver_name: r.receiver_name || '',
           receiver_email: r.receiver_email || '',
@@ -225,7 +233,8 @@ export class PurchaseGiftcardComponent implements OnInit {
       sender_email: targetState.sender_email,
       payment_method: targetState.payment_method,
       delivery_type: targetState.delivery_type,
-      scheduled_at: targetState.scheduled_at
+      scheduled_at: targetState.scheduled_at,
+      discount_code: targetState.discount_code
     }, { emitEvent: false });
 
     this.recipients.clear();
@@ -359,6 +368,7 @@ export class PurchaseGiftcardComponent implements OnInit {
       return;
     }
 
+    this.clearApiError();
     this.isSubmitting = true;
     const rawValue = this.purchaseForm.getRawValue();
 
@@ -371,6 +381,10 @@ export class PurchaseGiftcardComponent implements OnInit {
       sender_email: rawValue.sender_email,
       payment_method: rawValue.payment_method
     };
+
+    if (rawValue.discount_code) {
+      payload.discount_code = rawValue.discount_code;
+    }
 
     if (rawValue.purchase_type === 'gift') {
       if (rawValue.recipients && rawValue.recipients.length > 0) {
@@ -405,6 +419,11 @@ export class PurchaseGiftcardComponent implements OnInit {
 
     this.giftcardService.purchaseGiftcard(payload).subscribe({
       next: (response) => {
+        if (response.success === false) {
+          this.isSubmitting = false;
+          this.showApiError(response.message || 'An error occurred during purchase.');
+          return;
+        }
         if (response.data && response.data.gift_card_id) {
           const PayLoad = {
             payment_method: payload.payment_method,
@@ -421,6 +440,7 @@ export class PurchaseGiftcardComponent implements OnInit {
             },
             error: (err) => {
               this.isSubmitting = false;
+              this.showApiError(err?.error?.message || 'Payment initiation failed. Please try again.');
               console.error('Payment API Error:', err);
             }
           });
@@ -432,8 +452,26 @@ export class PurchaseGiftcardComponent implements OnInit {
       },
       error: (err) => {
         this.isSubmitting = false;
+        this.showApiError(err?.error?.message || 'An error occurred during purchase. Please try again.');
         console.error('Purchase Gift Card API Error:', err);
       }
     });
+  }
+
+  private showApiError(message: string): void {
+    this.apiErrorMessage = message;
+    if (this.errorTimeout) {
+      clearTimeout(this.errorTimeout);
+    }
+    this.errorTimeout = setTimeout(() => {
+      this.apiErrorMessage = '';
+    }, 3000);
+  }
+
+  private clearApiError(): void {
+    this.apiErrorMessage = '';
+    if (this.errorTimeout) {
+      clearTimeout(this.errorTimeout);
+    }
   }
 }
