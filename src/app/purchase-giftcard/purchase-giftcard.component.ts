@@ -417,6 +417,11 @@ export class PurchaseGiftcardComponent implements OnInit {
       }
     }
 
+    const awc = this.route.snapshot.queryParams['awc'] || localStorage.getItem('awc') || this.getCookie('awc');
+    if (awc) {
+      payload.awc = awc;
+    }
+
     this.giftcardService.purchaseGiftcard(payload).subscribe({
       next: (response) => {
         if (response.success === false) {
@@ -473,5 +478,17 @@ export class PurchaseGiftcardComponent implements OnInit {
     if (this.errorTimeout) {
       clearTimeout(this.errorTimeout);
     }
+  }
+
+  private getCookie(name: string): string | null {
+    try {
+      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      if (match) {
+        return match[2];
+      }
+    } catch (e) {
+      console.error('Error reading cookie:', e);
+    }
+    return null;
   }
 }

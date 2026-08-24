@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { CookieConsentService } from '../services/cookie-consent.service';
 import { FacebookPixelService } from '../services/facebook-pixel.service';
 import { AnalyticsService } from '../services/analytics.service';
@@ -16,6 +16,7 @@ import { CookieConsentComponent } from "../cookie-consent/cookie-consent.compone
   imports: [CommonModule, RouterModule, ReactiveFormsModule, CookieConsentComponent],
 })
 export class AnnualmembershipComponent {
+  
  @ViewChild('videoIframe') videoIframe?: ElementRef<HTMLIFrameElement>;
 
   scroll25 = false;
@@ -32,12 +33,38 @@ export class AnnualmembershipComponent {
     private cookieService: CookieConsentService,
     private fbPixel: FacebookPixelService,
     private analytics: AnalyticsService,
-    private thirdPartyScripts: ThirdPartyScriptsService
+    private thirdPartyScripts: ThirdPartyScriptsService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
     if (this.cookieService.getConsentStatus() === 'accepted') {
       this.analytics.ensureLoaded();
+    }
+
+    this.route.queryParams.subscribe(params => {
+      const awc = params['awc'];
+      if (awc) {
+        this.saveAwinClickId(awc);
+      }
+    });
+  }
+
+  private saveAwinClickId(awc: string) {
+    try {
+      localStorage.setItem('awc', awc);
+    } catch (e) {
+      console.error('Error saving awc to localStorage:', e);
+    }
+
+    try {
+      const expiryDays = 30;
+      const date = new Date();
+      date.setTime(date.getTime() + (expiryDays * 24 * 60 * 60 * 1000));
+      const expires = "expires=" + date.toUTCString();
+      document.cookie = `awc=${awc}; ${expires}; path=/; SameSite=Lax; Secure`;
+    } catch (e) {
+      console.error('Error setting awc cookie:', e);
     }
   }
 
