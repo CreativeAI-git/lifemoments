@@ -28,6 +28,11 @@ interface ModeState {
   delivery_type: string;
   scheduled_at: string;
   discount_code: string;
+  discountApplied?: boolean;
+  discountMessage?: string;
+  discountMessageClass?: string;
+  discountDetails?: any;
+  appliedOrderId?: string;
   recipients?: Array<{
     receiver_name: string;
     receiver_email: string;
@@ -53,6 +58,14 @@ export class PurchaseGiftcardComponent implements OnInit {
   minDate: string = '';
   purchaseType: 'self' | 'gift' = 'gift';
 
+  // Discount code field state
+  discountApplied = false;
+  isCheckingDiscount = false;
+  discountMessage = '';
+  discountMessageClass = '';
+  discountDetails: any = null;
+  appliedOrderId = '';
+
   // Independent state persistence for both modes
   private selfState: ModeState = {
     quantity: 1,
@@ -61,7 +74,12 @@ export class PurchaseGiftcardComponent implements OnInit {
     payment_method: 'paypal',
     delivery_type: 'immediate',
     scheduled_at: '',
-    discount_code: ''
+    discount_code: '',
+    discountApplied: false,
+    discountMessage: '',
+    discountMessageClass: '',
+    discountDetails: null,
+    appliedOrderId: ''
   };
 
   private giftState: ModeState = {
@@ -72,6 +90,11 @@ export class PurchaseGiftcardComponent implements OnInit {
     delivery_type: 'immediate',
     scheduled_at: '',
     discount_code: '',
+    discountApplied: false,
+    discountMessage: '',
+    discountMessageClass: '',
+    discountDetails: null,
+    appliedOrderId: '',
     recipients: []
   };
 
@@ -132,6 +155,14 @@ export class PurchaseGiftcardComponent implements OnInit {
       const val = Number(planId);
       const productId = val === 3 ? 'prod_premium_annual' : 'prod_premium_monthly';
       this.purchaseForm.get('product_id')?.setValue(productId, { emitEvent: false });
+    });
+
+    // Reset discount status when user types a new code
+    this.purchaseForm.get('discount_code')?.valueChanges.subscribe(() => {
+      this.discountApplied = false;
+      this.discountMessage = '';
+      this.discountDetails = null;
+      this.appliedOrderId = '';
     });
   }
 
@@ -201,7 +232,12 @@ export class PurchaseGiftcardComponent implements OnInit {
         payment_method: raw.payment_method || 'paypal',
         delivery_type: raw.delivery_type || 'immediate',
         scheduled_at: raw.scheduled_at || '',
-        discount_code: raw.discount_code || ''
+        discount_code: raw.discount_code || '',
+        discountApplied: this.discountApplied,
+        discountMessage: this.discountMessage,
+        discountMessageClass: this.discountMessageClass,
+        discountDetails: this.discountDetails,
+        appliedOrderId: this.appliedOrderId
       };
     } else {
       this.giftState = {
@@ -212,6 +248,11 @@ export class PurchaseGiftcardComponent implements OnInit {
         delivery_type: raw.delivery_type || 'immediate',
         scheduled_at: raw.scheduled_at || '',
         discount_code: raw.discount_code || '',
+        discountApplied: this.discountApplied,
+        discountMessage: this.discountMessage,
+        discountMessageClass: this.discountMessageClass,
+        discountDetails: this.discountDetails,
+        appliedOrderId: this.appliedOrderId,
         recipients: (raw.recipients || []).map((r: any) => ({
           receiver_name: r.receiver_name || '',
           receiver_email: r.receiver_email || '',
@@ -236,6 +277,12 @@ export class PurchaseGiftcardComponent implements OnInit {
       scheduled_at: targetState.scheduled_at,
       discount_code: targetState.discount_code
     }, { emitEvent: false });
+
+    this.discountApplied = targetState.discountApplied || false;
+    this.discountMessage = targetState.discountMessage || '';
+    this.discountMessageClass = targetState.discountMessageClass || '';
+    this.discountDetails = targetState.discountDetails || null;
+    this.appliedOrderId = targetState.appliedOrderId || '';
 
     this.recipients.clear();
 
@@ -459,6 +506,125 @@ export class PurchaseGiftcardComponent implements OnInit {
         this.isSubmitting = false;
         this.showApiError(err?.error?.message || 'An error occurred during purchase. Please try again.');
         console.error('Purchase Gift Card API Error:', err);
+      }
+    });
+  }
+
+  get isSubmitDisabled(): boolean {
+    const code = this.purchaseForm.get('discount_code')?.value?.trim();
+    if (code) {
+      return !this.discountApplied || this.isCheckingDiscount || this.isSubmitting;
+    }
+    return this.isSubmitting;
+  }
+
+  applyDiscount(): void {
+    const discountCode = this.purchaseForm.get('discount_code')?.value?.trim();
+    if (!discountCode) {
+      this.discountMessage = 'Please enter a discount code.';
+      this.discountMessageClass = 'text-danger';
+      this.discountApplied = false;
+      return;
+    }
+
+    // Validate form fields needed to construct a valid purchaseGiftcard payload
+    const form = this.purchaseForm;
+    form.get('sender_name')?.markAsTouched();
+    form.get('sender_email')?.markAsTouched();
+    form.get('quantity')?.markAsTouched();
+
+    if (this.purchaseType === 'gift') {
+      this.recipients.controls.forEach(group => {
+        group.get('receiver_name')?.markAsTouched();
+        group.get('receiver_email')?.markAsTouched();
+      });
+    }
+
+    const isSenderNameInvalid = form.get('sender_name')?.invalid;
+    const isSenderEmailInvalid = form.get('sender_email')?.invalid;
+    const isQuantityInvalid = form.get('quantity')?.invalid;
+    const isRecipientsInvalid = this.purchaseType === 'gift' && this.recipients.invalid;
+
+    if (isSenderNameInvalid || isSenderEmailInvalid || isQuantityInvalid || isRecipientsInvalid) {
+      this.discountMessage = 'Please fill out all required sender and recipient details first.';
+      this.discountMessageClass = 'text-danger';
+      this.discountApplied = false;
+      return;
+    }
+
+    this.isCheckingDiscount = true;
+    this.discountMessage = '';
+    this.discountApplied = false;
+    this.discountDetails = null;
+    this.appliedOrderId = '';
+
+    // Prepare payload
+    const rawValue = this.purchaseForm.getRawValue();
+    const payload: any = {
+      product_id: rawValue.product_id,
+      plan_id: Number(rawValue.plan_id),
+      purchase_type: rawValue.purchase_type,
+      quantity: Number(rawValue.quantity),
+      sender_name: rawValue.sender_name,
+      sender_email: rawValue.sender_email,
+      payment_method: rawValue.payment_method,
+      discount_code: discountCode
+    };
+
+    if (rawValue.purchase_type === 'gift') {
+      if (rawValue.recipients && rawValue.recipients.length > 0) {
+        payload.recipients = rawValue.recipients.map((rec: any) => {
+          const recObj: any = {
+            receiver_name: rec.receiver_name,
+            receiver_email: rec.receiver_email,
+            message: rec.message || ''
+          };
+
+          if (rawValue.recipients.length >= 2) {
+            recObj.delivery_type = rec.delivery_type || 'immediate';
+            if (rec.delivery_type === 'scheduled' && rec.scheduled_at) {
+              recObj.scheduled_at = rec.scheduled_at;
+            }
+          } else {
+            recObj.delivery_type = rawValue.delivery_type || 'immediate';
+            if (rawValue.delivery_type === 'scheduled' && rawValue.scheduled_at) {
+              recObj.scheduled_at = rawValue.scheduled_at;
+            }
+          }
+          return recObj;
+        });
+      }
+    } else {
+      payload.delivery_type = rawValue.delivery_type || 'immediate';
+      if (rawValue.delivery_type === 'scheduled' && rawValue.scheduled_at) {
+        payload.scheduled_at = rawValue.scheduled_at;
+      }
+    }
+
+    const awc = this.route.snapshot.queryParams['awc'] || localStorage.getItem('awc') || this.getCookie('awc');
+    if (awc) {
+      payload.awc = awc;
+    }
+
+    this.giftcardService.purchaseGiftcard(payload).subscribe({
+      next: (response) => {
+        this.isCheckingDiscount = false;
+        if (response.success === false) {
+          this.discountMessage = response.message || 'Invalid discount code.';
+          this.discountMessageClass = 'text-danger';
+        } else {
+          this.discountApplied = true;
+          this.discountMessage = 'Discount code applied successfully!';
+          this.discountMessageClass = 'text-success';
+          this.discountDetails = response.data;
+          this.appliedOrderId = response.data?.parent_order_id;
+        }
+      },
+      error: (err) => {
+        this.isCheckingDiscount = false;
+        this.discountMessage = err?.error?.message || 'Failed to apply discount code. Please try again.';
+        this.discountMessageClass = 'text-danger';
+        console.error('Discount Application API Error:', err);
       }
     });
   }

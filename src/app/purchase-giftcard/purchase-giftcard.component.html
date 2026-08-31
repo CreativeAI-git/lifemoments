@@ -358,8 +358,39 @@
           <div class="mt-4">
             <div class="mb-4">
               <label class="form-label extra-small fw-semibold text-dark mb-1">Discount Code (Optional)</label>
-              <input type="text" formControlName="discount_code" placeholder="Enter discount code"
-                class="ct_input fw-semibold text-dark rounded-3 ng-pristine ng-valid ng-touched" />
+              <div class="d-flex gap-2">
+                <input type="text" formControlName="discount_code" placeholder="Enter discount code"
+                  class="ct_input fw-semibold text-dark rounded-3 flex-grow-1" />
+                <button type="button" 
+                  class="btn btn-theme-green fw-semibold px-4 rounded-3 text-nowrap d-flex align-items-center justify-content-center gap-2" 
+                  style="height: 46px; min-width: 100px;" 
+                  (click)="applyDiscount()" 
+                  [disabled]="isCheckingDiscount || discountApplied">
+                  <span *ngIf="isCheckingDiscount" class="spinner-border spinner-border-sm text-light" role="status"></span>
+                  <i *ngIf="discountApplied && !isCheckingDiscount" class="fa-solid fa-circle-check text-white"></i>
+                  <span>{{ isCheckingDiscount ? 'Applying...' : (discountApplied ? 'Applied' : 'Apply') }}</span>
+                </button>
+              </div>
+              <div *ngIf="discountMessage" class="extra-small fw-semibold mt-1" [ngClass]="discountMessageClass">
+                {{ discountMessage }}
+              </div>
+
+              <!-- Discount Details summary -->
+              <div *ngIf="discountApplied && discountDetails" class="p-3 border rounded-3 bg-light-success border-success border-opacity-25 mt-3">
+                <div class="d-flex justify-content-between extra-small fw-semibold mb-1 text-muted">
+                  <span>Original Amount:</span>
+                  <span>US${{ discountDetails.original_amount | number:'1.2-2' }}</span>
+                </div>
+                <div class="d-flex justify-content-between extra-small fw-semibold mb-1 text-danger">
+                  <span>Discount Applied ({{ discountDetails.discount_code }}):</span>
+                  <span>-US${{ discountDetails.discount_amount | number:'1.2-2' }}</span>
+                </div>
+                <hr class="my-2 border-success border-opacity-10">
+                <div class="d-flex justify-content-between small fw-bold">
+                  <span class="text-dark">Total Amount:</span>
+                  <span class="text-theme-green">US${{ discountDetails.paid_amount | number:'1.2-2' }}</span>
+                </div>
+              </div>
             </div>
 
             <div *ngIf="apiErrorMessage" class="alert alert-danger mb-3 d-flex align-items-center gap-2 extra-small fw-semibold">
@@ -380,6 +411,7 @@
               </label>
             </div>
             <button type="submit"
+              [disabled]="isSubmitDisabled"
               class="btn btn-theme-green w-100 py-3 fs-6 rounded-3 fw-bold fs-5 d-flex align-items-center justify-content-center gap-2 shadow-sm">
               <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm text-light" role="status"></span>
               <span>{{ isSubmitting ? 'Processing...' : 'Continue to Payment' }}</span>
